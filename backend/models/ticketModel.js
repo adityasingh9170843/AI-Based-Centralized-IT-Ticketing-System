@@ -10,24 +10,30 @@ const ticketSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    department: {
+    category: {
       type: String,
+    },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
     },
     priority: {
       type: String,
+      enum: ["Low", "Medium", "High"],
       default: "Medium",
     },
-    suggestedResponse: {
-      type: String,
-    },
     assignedEngineer: {
-      type: String,
-      ref:"Engineer",
-      default: "Unassigned",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Engineer",
     },
     status: {
       type: String,
+      enum: ["Open", "In Progress", "Resolved"],
       default: "Pending",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
     },
   },
   {
