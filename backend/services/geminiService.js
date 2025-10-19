@@ -8,7 +8,7 @@ const ai = new GoogleGenAI({
 
 export const analyzeTicket = async (ticketText) => {
   try {
-    const SystemPrompt = `
+    const prompt = `
         You are an IT helpdesk assistant. Analyze the ticket and return ONLY valid JSON (no explanation).
         Fields:
         {
@@ -17,28 +17,30 @@ export const analyzeTicket = async (ticketText) => {
             "summary": "short summary"
         }
         Ticket:
-            """${ticketText}"""
+        ${ticketText}
         `;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      prompt: SystemPrompt,
-      temperature: 0.5,
-      maxOutputTokens: 100,
-      topP: 0.5,
-      topK: 0.5,
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
     });
 
-    const result = response.generations[0].text;
+    const result = response.text;
     const first = result.indexOf("{");
     const last = result.lastIndexOf("}");
-    const trimmed = result.slice(first, last + 1);  
+    const trimmed = result.slice(first, last + 1);
+    return trimmed
 
-    return trimmed;
+    
   } catch (error) {
     console.log(error);
     return JSON.stringify({
-      department: "General",
+      department: "Generalol",
       priority: "Medium",
       summary: "",
     });

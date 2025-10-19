@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.post("/", createTicket);
+router.post("/create", createTicket);
 router.get("/enginner/:id", getTicketsByEngineer);
 router.put("/assign/:ticketId/:engineerId", assignTicket);
 

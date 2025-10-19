@@ -9,6 +9,7 @@ export const createTicket = async(req,res)=>{
         const ticketText = `${title}\n\n${description}`;
         const analyzedText = await analyzeTicket(ticketText);
         console.log(analyzedText);
+        return res.status(200).json(analyzedText);
     }
     catch(error){
         console.log(error);
