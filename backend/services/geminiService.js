@@ -34,7 +34,9 @@ export const analyzeTicket = async (ticketText) => {
     const first = result.indexOf("{");
     const last = result.lastIndexOf("}");
     const trimmed = result.slice(first, last + 1);
+    console.log(trimmed);
     return trimmed
+    
 
     
   } catch (error) {
