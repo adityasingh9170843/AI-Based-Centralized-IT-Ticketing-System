@@ -29,9 +29,12 @@ export const analyzeTicket = async (ticketText) => {
       topK: 0.5,
     });
 
-    const result = JSON.parse(response.text);
+    const result = response.generations[0].text;
+    const first = result.indexOf("{");
+    const last = result.lastIndexOf("}");
+    const trimmed = result.slice(first, last + 1);  
 
-    return result;
+    return trimmed;
   } catch (error) {
     console.log(error);
     return JSON.stringify({
