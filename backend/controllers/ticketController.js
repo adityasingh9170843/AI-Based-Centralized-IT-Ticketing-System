@@ -1,9 +1,14 @@
-import Ticket from "../models/ticketModel";
-
+import Ticket from "../models/ticketModel.js";
+import Engineer from "../models/engineerModel.js";
+import Department from "../models/departmentModel.js";
+import { analyzeTicket } from "../services/geminiService.js";
 
 export const createTicket = async(req,res)=>{
     try{
-
+        const {title,description,departmentId} = req.body;
+        const ticketText = `${title}\n\n${description}`;
+        const analyzedText = await analyzeTicket(ticketText);
+        console.log(analyzedText);
     }
     catch(error){
         console.log(error);
