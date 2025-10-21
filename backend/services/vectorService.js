@@ -2,13 +2,40 @@ import { PineconeStore } from "@langchain/pinecone";
 import { embeddings } from "./embeddingService";
 import { pineconeIndex } from "./pineconeClient";
 import dotenv from "dotenv";
-dotenv.config({quiet: true});
+dotenv.config({ quiet: true });
 
-const pinecone = new PineconeStore({
-    apiKey: process.env.PINECONE_API_KEY,
+export const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
+  pineconeIndex,
+  maxConcurrency: 5,
 });
 
-export const vectorStore = await PineconeStore.fromExistingIndex(embeddings,{
-   pineconeIndex,
-   maxConcurrency: 5
-});
+export const AddTicketVector = async (ticket) => {
+  const doc = {
+    pageContent: ticket.description,
+    metadata: {
+      ticketId: ticket._id,
+      category: ticket.category,
+      priority: ticket.priority,
+    },
+  };
+  await vectorStore.addDocuments([doc]);
+  return true;
+};
+
+export const addEngineerVector = async (engineer) => {
+  const text = `${engineer.name} — dept:${
+    engineer.departmentName || ""
+  } — expertise: ${engineer.expertise?.join?.(", ") || ""}`;
+  const doc = {
+    pageContent: text,
+    metadata: {
+      engineerId: engineer._id,
+      department: engineer.departmentName,
+      expertise: engineer.expertise,
+      name: engineer.name,
+      email: engineer.email,
+    },
+  };
+  await vectorStore.addDocuments([doc]);
+  return true;
+};
