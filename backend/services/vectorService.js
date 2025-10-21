@@ -39,3 +39,26 @@ export const addEngineerVector = async (engineer) => {
   await vectorStore.addDocuments([doc]);
   return true;
 };
+
+
+export const findMatchingEngineers = async(text,topK=3)=>{
+    const results = await vectorStore.similaritySearch(text, topK);
+    return results.map((r)=>({
+        engineerId:r.metadata?.engineerId,
+        score:r.score,
+        name:r.metadata?.name,
+        content:r.pageContent,
+        metadata:r.metadata
+    }))
+}
+
+
+export const findSimilarTickets = async(text,topK=3)=>{
+    const results = await vectorStore.similaritySearch(text, topK);
+    return results.map((r)=>({
+        ticketId:r.metadata?.ticketId,
+        score:r.score,
+        content:r.pageContent,
+        metadata:r.metadata
+    }))
+}
