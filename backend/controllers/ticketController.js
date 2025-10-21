@@ -3,6 +3,7 @@ import Engineer from "../models/engineerModel.js";
 import Department from "../models/departmentModel.js";
 import { analyzeTicket } from "../services/geminiService.js";
 import { json } from "express";
+import { addTicketVector, AddTicketVector, findMatchingEngineers } from "../services/vectorService.js";
 
 export const createTicket = async(req,res)=>{
     try{
@@ -29,10 +30,35 @@ export const createTicket = async(req,res)=>{
 
 
         //Ticket Vector will implement later :D
+        await addTicketVector(ticket);
+
+
+
+        const matches = findMatchingEngineers(ticketText,3);
+        let assignedEngineer = null;
+         
+        if(matches.length > 0){
+            const top = matches[0];
+            const eng = await Engineer.findById(top.engineerId);
+            if(eng){
+                assignedEngineer = eng;
+                ticket.assignedEngineer = eng._id;
+                await ticket.save();
+                eng.tickets.push(ticket._id);
+                await eng.save();
+            }
+        }
+
+        const populate = await ticket.populate("assignedEngineer","name email");
+        res.status(201).json({
+            ticket:populate,
+            assignedEngineer
+        })
         
     }
     catch(error){
-        console.log(error);
+        console.error(error);
+        res.status(500).json({error:"Error creating ticket"});
     }
 }
 

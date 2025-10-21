@@ -9,7 +9,7 @@ export const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
   maxConcurrency: 5,
 });
 
-export const AddTicketVector = async (ticket) => {
+export const addTicketVector = async (ticket) => {
   const doc = {
     pageContent: ticket.description,
     metadata: {
