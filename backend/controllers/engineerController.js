@@ -1,6 +1,7 @@
 import Engineer from "../models/engineerModel";
 import Department from "../models/departmentModel";
 import { addEngineerVector } from "../services/vectorService";
+import { populate } from "dotenv";
 
 
 export const addEngineer = async(req,res)=>{
@@ -28,5 +29,28 @@ export const addEngineer = async(req,res)=>{
     }
     catch(error){
         res.status(500).json({error:"Error adding engineer"});
+    }
+}
+
+
+export const getEngineers = async(req,res)=>{
+    try{
+        const engineers = await Engineer.find({}).populate("department","name");
+        res.json(engineers);
+    }
+    catch(error){
+        res.status(500).json({error:"Error fetching engineers"});
+    }
+}
+
+
+export const getEngineerTickets = async(req,res)=>{
+    try{
+        const engineerId = req.params.id;
+        const eng = await Engineer.findById(engineerId).populate({path:"tickets",populate:{path:"department",select:"name"}});
+        res.json(eng.tickets);
+    }
+    catch(error){
+        res.status(500).json({error:"Error fetching engineer tickets"});
     }
 }
