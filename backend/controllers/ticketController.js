@@ -3,7 +3,7 @@ import Engineer from "../models/engineerModel.js";
 import Department from "../models/departmentModel.js";
 import { analyzeTicket } from "../services/geminiService.js";
 import { json } from "express";
-import { addTicketVector, AddTicketVector, findMatchingEngineers } from "../services/vectorService.js";
+import { addTicketVector, findMatchingEngineers } from "../services/vectorService.js";
 
 export const createTicket = async(req,res)=>{
     try{

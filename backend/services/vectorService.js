@@ -1,6 +1,6 @@
 import { PineconeStore } from "@langchain/pinecone";
-import { embeddings } from "./embeddingService";
-import { pineconeIndex } from "./pineconeClient";
+import { embeddings } from "./embeddingService.js";
+import { pineconeIndex } from "./pineconeClient.js";
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
 
