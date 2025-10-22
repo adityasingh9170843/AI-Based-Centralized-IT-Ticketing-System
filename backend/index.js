@@ -17,8 +17,8 @@ dotenv.config({quiet: true});
 
 
 app.use("/api/tickets",ticketRoutes);
-app.use("api/departments",departmentRoutes);
-app.use("api/engineers",engineerRoutes);
+app.use("/api/departments",departmentRoutes);
+app.use("/api/engineers",engineerRoutes);
 
 app.listen(process.env.PORT, () => {
     dbConnect();

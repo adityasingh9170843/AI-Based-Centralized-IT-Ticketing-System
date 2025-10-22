@@ -1,8 +1,6 @@
-import Engineer from "../models/engineerModel";
-import Department from "../models/departmentModel";
-import { addEngineerVector } from "../services/vectorService";
-import { populate } from "dotenv";
-
+import Engineer from "../models/engineerModel.js";
+import Department from "../models/departmentModel.js";
+import { addEngineerVector } from "../services/vectorService.js";
 
 export const addEngineer = async(req,res)=>{
     try{
@@ -17,6 +15,8 @@ export const addEngineer = async(req,res)=>{
         dept.engineers.push(engineer._id);
         await dept.save();
 
+        console.log("engiineercreatred",engineer);
+
         await addEngineerVector({
             _id:engineer._id,
             name:engineer.name,
@@ -25,9 +25,12 @@ export const addEngineer = async(req,res)=>{
             expertise:engineer.expertise
         });
 
+        console.log("Engineer vector added successfully");
+
         res.status(201).json(engineer);
     }
     catch(error){
+        console.error(error);
         res.status(500).json({error:"Error adding engineer"});
     }
 }

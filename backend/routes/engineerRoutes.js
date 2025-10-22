@@ -1,5 +1,5 @@
 import express from "express";
-import { addEngineer,getEngineerTickets,getEngineers } from "../controllers/engineerController";
+import { addEngineer,getEngineerTickets,getEngineers } from "../controllers/engineerController.js";
 
 const router = express.Router();
 
