@@ -1,17 +1,20 @@
-
 import { PineconeStore } from "@langchain/pinecone";
 import { embeddings } from "./embeddingService.js";
-import { pineconeIndex } from "./pineconeClient.js";
+import { engineerIndex,ticketIndex } from "./pineconeClient.js";
 import dotenv from "dotenv";
 dotenv.config({ quiet: true });
 
-let vectorStore;
+let engineerStore,ticketStore;
 
 try {
   console.log("Initializing vector store...");
-  vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-    pineconeIndex,
-    
+  engineerStore = await PineconeStore.fromExistingIndex(embeddings, {
+    pineconeIndex: engineerIndex,
+    maxConcurrency: 5,
+  });
+
+  ticketStore = await PineconeStore.fromExistingIndex(embeddings, {
+    pineconeIndex: ticketIndex,
     maxConcurrency: 5,
   });
   console.log("Vector store initialized successfully");
@@ -22,18 +25,18 @@ try {
 
 export const addTicketVector = async (ticket) => {
   try {
-    if (!vectorStore) throw new Error("Vector store not initialized");
+    if (!ticketStore) throw new Error("Vector store not initialized");
 
     const doc = {
       pageContent: ticket.description,
       metadata: {
-        ticketId: ticket._id,
+        ticketId: ticket._id.toString(),
         category: ticket.category,
         priority: ticket.priority,
       },
     };
 
-    await vectorStore.addDocuments([doc]);
+    await ticketStore.addDocuments([doc]);
     console.log(`Ticket vector added for ticket: ${ticket._id}`);
     return true;
   } catch (error) {
@@ -44,7 +47,7 @@ export const addTicketVector = async (ticket) => {
 
 export const addEngineerVector = async (engineer) => {
   try {
-    if (!vectorStore) throw new Error("Vector store not initialized");
+    if (!engineerStore) throw new Error("Vector store not initialized");
 
     const text = `${engineer.name} — dept:${
       engineer.departmentName || ""
@@ -61,7 +64,7 @@ export const addEngineerVector = async (engineer) => {
       },
     };
 
-    await vectorStore.addDocuments([doc]);
+    await engineerStore.addDocuments([doc]);
     console.log(`Engineer vector added for: ${engineer.name}`);
     return true;
   } catch (error) {
@@ -72,9 +75,9 @@ export const addEngineerVector = async (engineer) => {
 
 export const findMatchingEngineers = async (text, topK = 3) => {
   try {
-    if (!vectorStore) throw new Error("Vector store not initialized");
+    if (!engineerStore) throw new Error("Vector store not initialized");
 
-    const results = await vectorStore.similaritySearch(text, topK);
+    const results = await engineerStore.similaritySearch(text, topK);
     return results.map((r) => ({
       engineerId: r.metadata?.engineerId,
       score: r.score,
@@ -90,11 +93,11 @@ export const findMatchingEngineers = async (text, topK = 3) => {
 
 export const findSimilarTickets = async (text, topK = 3) => {
   try {
-    if (!vectorStore) throw new Error("Vector store not initialized");
+    if (!ticketStore) throw new Error("Vector store not initialized");
 
-    const results = await vectorStore.similaritySearch(text, topK);
+    const results = await ticketStore.similaritySearch(text, topK);
     return results.map((r) => ({
-      ticketId: r.metadata?.ticketId,
+      ticketId: r.metadata?.ticketId.toString(),
       score: r.score,
       content: r.pageContent,
       metadata: r.metadata,

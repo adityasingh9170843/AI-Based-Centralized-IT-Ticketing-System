@@ -6,4 +6,6 @@ const pinecone = new PineconeClient({
   apiKey: process.env.PINECONE_API_KEY,
 });
 
-export const pineconeIndex = pinecone.Index("ticket-match");
+export const ticketIndex = pinecone.Index("ticket-match");
+export const engineerIndex = pinecone.Index("engineer-match");
+

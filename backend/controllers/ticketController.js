@@ -13,18 +13,18 @@ export const createTicket = async(req,res)=>{
         console.log(analyzedText.summary);
         
 
-        let depId = departmentId;
-        if(!depId){
-            const department = await Department.findOne({name:"General"});
-            depId = department._id;
-        }
+        ////let depId = departmentId;
+        //if(!depId){
+            //const department = await Department.findOne({name:"General"});
+            ////depId = department._id;
+        //}
 
 
         const ticket = await Ticket.create({
             title,
             description,
             category:analyzedText.department,
-            department:depId,
+            //department:depId,
             priority:analyzedText.priority
         })
 
@@ -34,12 +34,13 @@ export const createTicket = async(req,res)=>{
 
 
 
-        const matches = findMatchingEngineers(ticketText,3);
+        const matches = await findMatchingEngineers(ticketText,3);
         let assignedEngineer = null;
-         
+         console.log(matches);
         if(matches.length > 0){
             const top = matches[0];
             const eng = await Engineer.findById(top.engineerId);
+            console.log(eng);
             if(eng){
                 assignedEngineer = eng;
                 ticket.assignedEngineer = eng._id;
