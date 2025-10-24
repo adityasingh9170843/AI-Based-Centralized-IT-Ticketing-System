@@ -3,7 +3,7 @@ import Engineer from "../models/engineerModel.js";
 
 import { analyzeTicket } from "../services/geminiService.js";
 
-import { addTicketVector, findMatchingEngineers } from "../services/vectorService.js";
+import { addTicketVector, findMatchingEngineers, findSimilarTickets } from "../services/vectorService.js";
 
 export const createTicket = async(req,res)=>{
     try{
@@ -19,14 +19,15 @@ export const createTicket = async(req,res)=>{
             title,
             description,
             category:analyzedText.department,
-           
             priority:analyzedText.priority
         })
 
 
-        //Ticket Vector will implement later :D
+        //Ticket Vector will implement later :D hehehe
         await addTicketVector(ticket);
 
+        const similarTickets = await findSimilarTickets(ticketText,3);
+        console.log("Similar tickets",similarTickets);
 
 
         const matches = await findMatchingEngineers(ticketText,3);
@@ -48,7 +49,8 @@ export const createTicket = async(req,res)=>{
         const populate = await ticket.populate("assignedEngineer","name email");
         res.status(201).json({
             ticket:populate,
-            assignedEngineer
+            assignedEngineer,
+            similarTickets
         })
         
     }
