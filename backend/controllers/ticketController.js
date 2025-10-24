@@ -1,8 +1,8 @@
 import Ticket from "../models/ticketModel.js";
 import Engineer from "../models/engineerModel.js";
-import Department from "../models/departmentModel.js";
+
 import { analyzeTicket } from "../services/geminiService.js";
-import { json } from "express";
+
 import { addTicketVector, findMatchingEngineers } from "../services/vectorService.js";
 
 export const createTicket = async(req,res)=>{
@@ -13,18 +13,13 @@ export const createTicket = async(req,res)=>{
         console.log(analyzedText.summary);
         
 
-        ////let depId = departmentId;
-        //if(!depId){
-            //const department = await Department.findOne({name:"General"});
-            ////depId = department._id;
-        //}
-
+        
 
         const ticket = await Ticket.create({
             title,
             description,
             category:analyzedText.department,
-            //department:depId,
+           
             priority:analyzedText.priority
         })
 
