@@ -1,4 +1,4 @@
-// services/emailListener.js
+
 import Imap from "imap";
 import { simpleParser } from "mailparser";
 import cron from "node-cron";
@@ -7,11 +7,11 @@ dotenv.config();
 
 console.log("📧 Email listener loaded");
 
-// IMAP configuration
+
 const imapConfig = {
-  user: process.env.MAIL_USER,      // your email
-  password: process.env.MAIL_PASS,  // app password if using Gmail
-  host: "imap.gmail.com",           // IMAP host
+  user: process.env.MAIL_USER,      
+  password: process.env.MAIL_PASS,  
+  host: "imap.gmail.com",           
   port: 993,
   tls: true,
   tlsOptions: { rejectUnauthorized: false }
@@ -23,26 +23,26 @@ function openInbox(cb) {
   imap.openBox("INBOX", false, cb);
 }
 
-// Cron job to check emails every 2 minutes
+
 cron.schedule("*/2 * * * *", () => {
   console.log("⏳ Checking inbox for new emails...");
 
   imap.once("ready", () => {
     openInbox((err, box) => {
       if (err) {
-        console.error("❌ Error opening inbox:", err);
+        console.error("Error opening inbox:", err);
         return;
       }
 
       imap.search(["UNSEEN"], (err, results) => {
         if (err) {
-          console.error("❌ Search error:", err);
+          console.error("Search error:", err);
           imap.end()
           return;
         }
 
         if (!results.length) {
-          console.log("📭 No new emails found.");
+          console.log("No new emails found.");
           imap.end();
           return;
         }
@@ -58,15 +58,15 @@ cron.schedule("*/2 * * * *", () => {
 
               console.log("\n📩 New Email Received!");
               console.log("Subject:", subject);
-              console.log("Body:", body.slice(0, 300)); // logs first 300 chars
+              console.log("Body:", body.slice(0, 300)); 
             } catch (err) {
-              console.error("❌ Error parsing email:", err);
+              console.error("Error parsing email:", err);
             }
           });
         });
 
         fetcher.once("end", () => {
-          console.log("✅ All unread emails processed.\n");
+          console.log("All unread emails processed.\n");
           imap.end();
         });
       });
@@ -74,7 +74,7 @@ cron.schedule("*/2 * * * *", () => {
   });
 
   imap.once("error", (err) => {
-    console.error("❌ IMAP error:", err);
+    console.error("IMAP error:", err);
   });
 
   imap.once("end", () => {
