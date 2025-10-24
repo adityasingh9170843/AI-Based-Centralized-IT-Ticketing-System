@@ -15,12 +15,17 @@
     "@google/generative-ai": "^0.24.1",
     "@langchain/google-genai": "^1.0.0",
     "@langchain/pinecone": "^1.0.0",
+    "@zone-eu/mailsplit": "^5.4.7",
     "axios": "^1.12.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "imap": "^0.8.19",
+    "mailparser": "^3.7.5",
     "mongoose": "^8.19.1",
-    "nodemon": "^3.1.10"
+    "node-cron": "^4.2.1",
+    "nodemon": "^3.1.10",
+    "simple-parser": "^0.0.0"
   }
 }

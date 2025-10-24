@@ -6,6 +6,8 @@ import { dbConnect } from './utils/dbConnect.js';
 import ticketRoutes from './routes/ticketRoutes.js';
 import departmentRoutes from './routes/departmentRoutes.js';
 import engineerRoutes from './routes/engineerRoutes.js';
+import './services/emailListener.js';
+
 
 const app = express();
 
