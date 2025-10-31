@@ -16,9 +16,9 @@ Return ONLY valid JSON — no extra text.
 
 Format:
 {
-  "department": "Network|Hardware|Software|Database|Security|General",
-            "priority": "Low|Medium|High",
-            "summary": "short summary"
+  "intent": "create_ticket" | "other",
+  "title": "short title (if intent=create_ticket else empty)",
+  "description": "detailed description or original message"
 }
 
 Determine intent as "create_ticket" if the user reports a problem, requests help, or explicitly asks to create a ticket.
