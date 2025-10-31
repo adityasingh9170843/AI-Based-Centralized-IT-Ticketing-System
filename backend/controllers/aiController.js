@@ -1,9 +1,10 @@
-import { analyzeTicket } from "../services/geminiService";
 import Ticket from "../models/ticketModel";
 import {
   addTicketVector,
   findMatchingEngineers,
+  
 } from "../services/vectorService";
+import { analyzeTicket } from "../services/geminiService";
 export const handleChat = async (req, res) => {
   try {
     const { message } = req.body;
@@ -20,7 +21,8 @@ export const handleChat = async (req, res) => {
       });
     }
 
-    const analyzeTicket = await analyzeTicket(parsed.description);
+    const analyzedText = await analyzeTicket(parsed.description);
+    console.log(analyzedText.summary);
 
     const ticket = await Ticket.create({
       title: parsed.title,
