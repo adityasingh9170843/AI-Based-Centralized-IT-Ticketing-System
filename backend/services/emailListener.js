@@ -1,4 +1,3 @@
-
 import Imap from "imap";
 import { simpleParser } from "mailparser";
 import cron from "node-cron";
