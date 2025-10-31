@@ -20,7 +20,7 @@ export const createTicket = async(req,res)=>{
             description,
             category:analyzedText.department,
             priority:analyzedText.priority
-            
+
         })
 
 
@@ -105,5 +105,29 @@ export const assignTicket = async(req,res)=>{
     catch(error){
         console.error(error);
         res.status(500).json({error:"Error assigning ticket"});
+    }
+}
+
+
+export const addResolution = async(req,res)=>{
+    try{
+        const {ticketId} = req.params;
+        const {resolution} = req.body;
+        const ticket = await Ticket.findById(ticketId);
+        if(!ticket){
+            return res.status(404).json({error:"Ticket not found"});
+        }
+        ticket.resolution = resolution;
+        ticket.status = "resolved";
+        ticket.comment.push({
+            author:"Engineer",
+            message:`${resolution}`
+        })
+        await ticket.save();
+        res.json(ticket);
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({error:"Error adding resolution"});
     }
 }
