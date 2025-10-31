@@ -31,6 +31,14 @@ const ticketSchema = mongoose.Schema(
       enum: ["Open", "In Progress", "Resolved","Pending"],
       default: "Pending",
     },
+    resolution:{
+        type: String
+    },
+    comments:[{
+      author:{type: mongoose.Schema.Types.ObjectId, ref: "Engineer"},
+      message: {type: String},
+      createdAt: {type: Date, default: Date.now},
+    }],
     createdAt: {
       type: Date,
       default: Date.now,

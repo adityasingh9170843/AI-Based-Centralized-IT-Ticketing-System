@@ -1,10 +1,10 @@
-import Ticket from "../models/ticketModel";
+import Ticket from "../models/ticketModel.js";
 import {
   addTicketVector,
   findMatchingEngineers,
   
-} from "../services/vectorService";
-import { analyzeTicket } from "../services/geminiService";
+} from "../services/vectorService.js";
+import { analyzeTicket } from "../services/geminiService.js";
 export const handleChat = async (req, res) => {
   try {
     const { message } = req.body;

@@ -20,6 +20,7 @@ export const createTicket = async(req,res)=>{
             description,
             category:analyzedText.department,
             priority:analyzedText.priority
+            
         })
 
 
@@ -40,6 +41,7 @@ export const createTicket = async(req,res)=>{
             if(eng){
                 assignedEngineer = eng;
                 ticket.assignedEngineer = eng._id;
+                ticket.status = "In Progress";
                 await ticket.save();
                 eng.tickets.push(ticket._id);
                 await eng.save();

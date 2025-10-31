@@ -1,4 +1,4 @@
-import Ticket from "../models/ticketModel";
+import Ticket from "../models/ticketModel.js";
 
 export const getAnalytics = async (req, res) => {
   try {
