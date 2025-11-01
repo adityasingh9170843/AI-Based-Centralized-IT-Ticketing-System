@@ -71,7 +71,7 @@ export default function Dashboard() {
             <div className="space-y-4">
               {[1, 2, 3, 4].map((item) => (
                 <div key={item} className="flex items-start gap-4 pb-4 border-b border-border last:border-0">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0" />
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 shrink-0" />
                   <div>
                     <p className="font-medium text-foreground">Ticket #TK-{1000 + item} updated</p>
                     <p className="text-sm text-muted-foreground">Support team responded to customer inquiry</p>
@@ -97,7 +97,7 @@ export default function Dashboard() {
                   </div>
                   <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-cyan-500 to-blue-500"
+                      className="h-full bg-green-400"
                       style={{ width: `${95 - idx * 5}%` }}
                     />
                   </div>
