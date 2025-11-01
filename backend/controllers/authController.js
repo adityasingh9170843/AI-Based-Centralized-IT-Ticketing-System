@@ -70,3 +70,9 @@ export const login = async (req, res) => {
     throw new Error(error.message);
   }
 };
+
+
+export const logout = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
+};
