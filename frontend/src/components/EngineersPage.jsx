@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Mail, Briefcase, Plus, Award } from "lucide-react"
-
+import AddEngineerModal from "./AddEngineerForm"
 const mockEngineers = [
   {
     id: "ENG-001",
