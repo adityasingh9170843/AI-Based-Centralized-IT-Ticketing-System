@@ -13,4 +13,5 @@ router.post("/create",verifyToken,authorizeRoles("user"), createTicket);
 router.get("/enginner/:id",verifyToken,authorizeRoles("engineer"), getTicketsByEngineer);
 router.put("/assign/:ticketId/:engineerId",verifyToken,authorizeRoles("admin"), assignTicket);
 router.put("/resolve/:ticketId",verifyToken,authorizeRoles("engineer"), addResolution);
+router.put("/close/:ticketId",verifyToken,authorizeRoles("admin"), addResolution);  
 export default router;

@@ -39,6 +39,15 @@ const ticketSchema = mongoose.Schema(
       message: {type: String},
       createdAt: {type: Date, default: Date.now},
     }],
+    closedBy:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+    },
+    closedAt: {
+      type: Date,
+      default: null
+    },
     createdAt: {
       type: Date,
       default: Date.now,

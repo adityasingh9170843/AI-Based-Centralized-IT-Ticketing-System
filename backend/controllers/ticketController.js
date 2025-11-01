@@ -131,3 +131,36 @@ export const addResolution = async(req,res)=>{
         res.status(500).json({error:"Error adding resolution"});
     }
 }
+
+export const closeTicket = async(req,res)=>{
+    try{
+        const {ticketId} = req.params;
+        const adminId = req.LoggedInUser._id;
+
+        const ticket = await Ticket.findById(ticketId);
+        if(!ticket){
+            return res.status(404).json({error:"Ticket not found"});
+        }
+
+        if(ticket.status!=="Resolved"){
+            return res.status(400).json({error:"Ticket is not resolved"});
+        }
+
+        ticket.status = "Closed";
+        ticket.comment.push({
+            author:"Admin",
+            message:`Closing the Ticket,Issue Resolved`
+        })
+        ticket.closedBy = adminId;
+        ticket.closedAt = Date.now();
+        await ticket.save();
+        res.status(200).json({
+            message:"Ticket closed successfully",
+            ticket
+        });
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({error:"Error closing ticket"});
+    }
+}
