@@ -133,7 +133,7 @@ export default function EngineersPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">Active Tickets</p>
-                <p className="text-foreground">{selectedEngineer.ticketsAssigned}</p>
+                <p className="text-foreground">{selectedEngineer.tickets.length}</p>
               </div>
             </div>
           </DialogContent>
