@@ -7,40 +7,7 @@ import { Mail, Briefcase, Plus, Award } from "lucide-react"
 import AddEngineerModal from "./AddEngineerForm"
 import axios from "axios"
 import { useEffect } from "react"
-const mockEngineers = [
-  {
-    id: "ENG-001",
-    name: "John Doe",
-    department: "Infrastructure",
-    expertise: ["AWS", "Kubernetes", "Database"],
-    email: "john@company.com",
-    ticketsAssigned: 5,
-  },
-  {
-    id: "ENG-002",
-    name: "Jane Smith",
-    department: "Backend",
-    expertise: ["Node.js", "Python", "API Design"],
-    email: "jane@company.com",
-    ticketsAssigned: 3,
-  },
-  {
-    id: "ENG-003",
-    name: "Mike Johnson",
-    department: "Frontend",
-    expertise: ["React", "TypeScript", "CSS"],
-    email: "mike@company.com",
-    ticketsAssigned: 4,
-  },
-  {
-    id: "ENG-004",
-    name: "Sarah Lee",
-    department: "Security",
-    expertise: ["SSL/TLS", "Security Audit", "Compliance"],
-    email: "sarah@company.com",
-    ticketsAssigned: 2,
-  },
-]
+
 
 export default function EngineersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -121,7 +88,7 @@ export default function EngineersPage() {
               </div>
 
               <div className="pt-3 border-t border-border">
-                <p className="text-sm font-medium text-foreground">{engineer.ticketsAssigned} Active Tickets</p>
+                <p className="text-sm font-medium text-foreground">{engineer.tickets.length} Active Tickets</p>
                 <Button
                   variant="outline"
                   className="w-full mt-3 border-border bg-muted hover:bg-muted/80"
