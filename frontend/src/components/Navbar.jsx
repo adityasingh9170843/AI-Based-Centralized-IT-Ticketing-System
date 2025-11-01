@@ -14,12 +14,10 @@ export default function Navbar() {
 
       <div className="flex items-center gap-4">
         <button className="relative p-2 hover:bg-muted rounded-lg transition-colors group">
-          <MessageSquare className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full" />
+          
+          
         </button>
         <button className="relative p-2 hover:bg-muted rounded-lg transition-colors group">
-          <Bell className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
         </button>
 
         <div className="flex items-center gap-3 pl-4 border-l border-border">
