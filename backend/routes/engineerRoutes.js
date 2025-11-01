@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 router.post("/",verifyToken,authorizeRoles("admin"),addEngineer)
-router.get("/",verifyToken,authorizeRoles("admin"),getEngineers)
+router.get("/",/*verifyToken,authorizeRoles("admin"),*/getEngineers)
 router.get("/:id/tickets",verifyToken,authorizeRoles("engineer"),getEngineerTickets)
 
 export default router

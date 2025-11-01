@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Mail, Briefcase, Plus, Award } from "lucide-react"
 import AddEngineerModal from "./AddEngineerForm"
+import axios from "axios"
+import { useEffect } from "react"
 const mockEngineers = [
   {
     id: "ENG-001",
@@ -43,6 +45,23 @@ const mockEngineers = [
 export default function EngineersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [selectedEngineer, setSelectedEngineer] = useState(null)
+  const [Engineer, setEngineer] = useState([])
+
+  const getEngineers = async () => {
+    try{
+      const response = await axios.get("http://localhost:5000/api/engineers/")
+      setEngineer(response.data)
+      console.log(response)
+    }
+    catch(error){
+      console.log(error)
+    }
+  };
+
+
+  useEffect(()=>{
+    getEngineers()
+  },[])
 
   return (
     <div className="p-8">
@@ -58,9 +77,9 @@ export default function EngineersPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockEngineers.map((engineer) => (
+        {Engineer.map((engineer) => (
           <Card
-            key={engineer.id}
+            key={engineer._id}
             className="bg-card border-border hover:shadow-lg transition-shadow cursor-pointer group hover:border-primary/50"
             onClick={() => setSelectedEngineer(engineer)}
           >
@@ -70,10 +89,10 @@ export default function EngineersPage() {
                   <CardTitle className="text-lg text-foreground">{engineer.name}</CardTitle>
                   <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
                     <Briefcase className="w-3 h-3" />
-                    {engineer.department}
+                    {engineer.department?.name}
                   </p>
                 </div>
-                <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:shadow-lg transition-shadow">
+                <div className="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center group-hover:shadow-lg transition-shadow">
                   <Award className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -129,7 +148,7 @@ export default function EngineersPage() {
             <div className="space-y-4">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">Department</p>
-                <p className="text-foreground">{selectedEngineer.department}</p>
+                <p className="text-foreground">{selectedEngineer.department.name}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-2">Expertise</p>
