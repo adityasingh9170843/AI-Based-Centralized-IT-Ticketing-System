@@ -4,6 +4,7 @@ import {
   getTicketsByEngineer,
   assignTicket,
   addResolution,
+  closeTicket,
   getTicketsByUser,
 } from "../controllers/ticketController.js";
 import { verifyToken,authorizeRoles } from "../middleware/authMiddleware.js";

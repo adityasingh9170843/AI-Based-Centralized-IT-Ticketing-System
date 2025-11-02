@@ -2,73 +2,78 @@ import Engineer from "../models/engineerModel.js";
 import Department from "../models/departmentModel.js";
 import { addEngineerVector } from "../services/vectorService.js";
 
-export const addEngineer = async(req,res)=>{
-    try{
-                const {name,email,departmentId,expertise=[]} = req.body;
-        const dept = await Department.findById(departmentId);
-        if(!dept){
-            return res.status(404).json({error:"Department not found"});
-        }
-
-                
-                const raw = expertise ?? [];
-                const arr = Array.isArray(raw)
-                    ? raw
-                    : typeof raw === "string"
-                    ? raw.split(/[\n,]/).map((s) => s.trim()).filter(Boolean)
-                    : [];
-                const seen = new Set();
-                const expertiseClean = arr.filter((x) => {
-                    const k = x.toLowerCase();
-                    if (seen.has(k)) return false;
-                    seen.add(k);
-                    return true;
-                });
-
-                const engineer = await Engineer.create({name,email,department:dept._id,expertise: expertiseClean});
-        
-        dept.engineers.push(engineer._id);
-        await dept.save();
-
-        console.log("engiineercreatred",engineer);
-
-        await addEngineerVector({
-            _id:engineer._id,
-            name:engineer.name,
-            email:engineer.email,
-            departmentName:dept.name,
-            expertise:engineer.expertise
-        });
-
-        console.log("Engineer vector added successfully");
-
-        res.status(201).json(engineer);
+export const addEngineer = async (req, res) => {
+  try {
+    const { name, email, departmentId, expertise = [] } = req.body;
+    const dept = await Department.findById(departmentId);
+    if (!dept) {
+      return res.status(404).json({ error: "Department not found" });
     }
-    catch(error){
-        console.error(error);
-        res.status(500).json({error:"Error adding engineer"});
-    }
-}
 
+    const raw = expertise ?? [];
+    const arr = Array.isArray(raw)
+      ? raw
+      : typeof raw === "string"
+      ? raw
+          .split(/[\n,]/)
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
+    const seen = new Set();
+    const expertiseClean = arr.filter((x) => {
+      const k = x.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
 
-export const getEngineers = async(req,res)=>{
-    try{
-        const engineers = await Engineer.find({}).populate("department","name");
-        res.json(engineers);
-    }
-    catch(error){
-        res.status(500).json({error:"Error fetching engineers"});
-    }
-}
+    const engineer = await Engineer.create({
+      name,
+      email,
+      department: dept._id,
+      expertise: expertiseClean,
+    });
 
+    dept.engineers.push(engineer._id);
+    await dept.save();
 
-export const getEngineerTickets = async(req,res)=>{
-    try{
-        const engineerId = req.params.id;
-        const eng = await Engineer.findById(engineerId).populate({path:"tickets",populate:{path:"department",select:"name"}});
-        res.json(eng.tickets);
-    }
-    catch(error){
-        res.status(500).json({error:"Error fetching engineer tickets"});
-    }
-}
+    console.log("engiineercreatred", engineer);
+
+    await addEngineerVector({
+      _id: engineer._id,
+      name: engineer.name,
+      email: engineer.email,
+      departmentName: dept.name,
+      expertise: engineer.expertise,
+    });
+
+    console.log("Engineer vector added successfully");
+
+    res.status(201).json(engineer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error adding engineer" });
+  }
+};
+
+export const getEngineers = async (req, res) => {
+  try {
+    const engineers = await Engineer.find({}).populate("department", "name");
+    res.json(engineers);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching engineers" });
+  }
+};
+
+export const getEngineerTickets = async (req, res) => {
+  try {
+    const engineerId = req.params.id;
+    const eng = await Engineer.findById(engineerId).populate({
+      path: "tickets",
+      populate: { path: "department", select: "name" },
+    });
+    res.json(eng.tickets);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching engineer tickets" });
+  }
+};

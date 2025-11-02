@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Engineer from "../models/engineerModel.js";
 import Department from "../models/departmentModel.js";
+import { addEngineerVector } from "../services/vectorService.js";
+import e from "express";
 
 const signEngineerToken = (engineer) => {
   return jwt.sign(
@@ -33,10 +35,12 @@ export const registerEngineer = async (req, res) => {
     const hash = await bcrypt.hash(password, salt);
 
     let deptRef = undefined;
+    let deptName = undefined;
     if (departmentId) {
       const dept = await Department.findById(departmentId);
       if (!dept) return res.status(404).json({ error: "Department not found" });
       deptRef = dept._id;
+      deptName = dept.name;
     }
 
    
@@ -66,11 +70,34 @@ export const registerEngineer = async (req, res) => {
       await Department.findByIdAndUpdate(departmentId, { $push: { engineers: engineer._id } });
     }
 
+    // Add engineer to vector store for semantic matching
+    try {
+      await addEngineerVector({
+        _id: engineer._id,
+        name: engineer.name,
+        email: engineer.email,
+        departmentName: deptName,
+        expertise: engineer.expertise,
+      });
+    } catch (e) {
+      console.log("Skipping engineer vector indexing:", e?.message);
+    }
+
     const token = signEngineerToken(engineer);
     res.cookie("engineer_token", token, cookieOptions);
 
+
+
+
     const { password: _, ...safe } = engineer.toObject();
     return res.status(201).json({ engineer: safe, token });
+
+    
+
+
+
+
+
   } catch (err) {
     console.error("registerEngineer error", err);
     return res.status(500).json({ error: "Failed to register engineer" });
