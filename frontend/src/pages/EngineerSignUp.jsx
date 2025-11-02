@@ -44,14 +44,19 @@ export default function EngineerSignUp() {
     if (!canSubmit) return;
     setLoading(true);
     try {
+      const expertiseArray = Array.isArray(expertise)
+        ? expertise
+        : typeof expertise === "string"
+        ? expertise.split(/[\n,]/).map((s) => s.trim()).filter(Boolean)
+        : [];
       const res = await axios.post(
         "http://localhost:5000/api/engineer/register",
-        { name, email, password, departmentId, expertise },
+        { name, email, password, departmentId, expertise: expertiseArray },
         { withCredentials: true }
       );
       const engineer = res?.data?.engineer;
       if (engineer) {
-        updateUser(engineer); // store engineer in the shared context
+        updateUser(engineer); 
         navigate("/engineer", { replace: true });
       } else {
         setError("Unexpected response. Please try again.");
@@ -121,7 +126,8 @@ export default function EngineerSignUp() {
               </div>
               <div className="space-y-2">
                 <label htmlFor="expertise" className="text-sm font-medium">Expertise</label>
-                <Input id="expertise" type="text" value={expertise} onChange={(e) => setExpertise(e.target.value)} />
+                <Input id="expertise" type="text" value={expertise} onChange={(e) => setExpertise(e.target.value)} placeholder="e.g., Networking, DevOps, Security" />
+                <p className="text-xs text-muted-foreground">Separate multiple items with commas or new lines.</p>
               </div>
 
               <Button type="submit" className="w-full" disabled={!canSubmit}>

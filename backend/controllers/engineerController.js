@@ -4,13 +4,28 @@ import { addEngineerVector } from "../services/vectorService.js";
 
 export const addEngineer = async(req,res)=>{
     try{
-        const {name,email,departmentId,expertise=[]} = req.body;
+                const {name,email,departmentId,expertise=[]} = req.body;
         const dept = await Department.findById(departmentId);
         if(!dept){
             return res.status(404).json({error:"Department not found"});
         }
 
-        const engineer = await Engineer.create({name,email,department:dept._id,expertise});
+                
+                const raw = expertise ?? [];
+                const arr = Array.isArray(raw)
+                    ? raw
+                    : typeof raw === "string"
+                    ? raw.split(/[\n,]/).map((s) => s.trim()).filter(Boolean)
+                    : [];
+                const seen = new Set();
+                const expertiseClean = arr.filter((x) => {
+                    const k = x.toLowerCase();
+                    if (seen.has(k)) return false;
+                    seen.add(k);
+                    return true;
+                });
+
+                const engineer = await Engineer.create({name,email,department:dept._id,expertise: expertiseClean});
         
         dept.engineers.push(engineer._id);
         await dept.save();

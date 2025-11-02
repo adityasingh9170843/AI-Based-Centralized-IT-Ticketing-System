@@ -19,7 +19,7 @@ const cookieOptions = {
 
 export const registerEngineer = async (req, res) => {
   try {
-    const { name, email, password, departmentId, expertise } = req.body;
+  const { name, email, password, departmentId, expertise } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Name, email, and password are required" });
     }
@@ -39,12 +39,26 @@ export const registerEngineer = async (req, res) => {
       deptRef = dept._id;
     }
 
+   
+    const expertiseArr = Array.isArray(expertise)
+      ? expertise
+      : typeof expertise === "string"
+      ? expertise.split(/[\n,]/).map((s) => s.trim()).filter(Boolean)
+      : [];
+    const seen = new Set();
+    const expertiseClean = expertiseArr.filter((x) => {
+      const k = x.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+
     const engineer = await Engineer.create({
       name,
       email,
       password: hash,
       department: deptRef,
-      expertise,
+      expertise: expertiseClean,
       role: "engineer",
     });
 
