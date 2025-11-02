@@ -11,6 +11,10 @@ const engineerSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     department: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",
@@ -20,6 +24,10 @@ const engineerSchema = mongoose.Schema(
         type: String,
       },
     ],
+    role: {
+      type: String,
+      default: "engineer",
+    },
     tickets: [
       {
         type: mongoose.Schema.Types.ObjectId,

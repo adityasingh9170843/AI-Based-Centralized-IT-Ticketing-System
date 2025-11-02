@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
-import Engineer from "../models/Engineer.js";
+import Engineer from "../models/engineerModel.js";
 
 export const verifyToken = async(req,res,next) =>{
     const token = req.cookies.token;
@@ -8,8 +8,8 @@ export const verifyToken = async(req,res,next) =>{
         return res.status(401).json({error:"Unauthorized"});
     }
     try{
-        let decoded = jwt.verify(token,process.env.JWT_SECRET);
-        let user = await User.findById(decoded.user.id).select("-password");
+    let decoded = jwt.verify(token,process.env.JWT_SECRET);
+    let user = await User.findById(decoded.id).select("-password");
         req.LoggedInUser = user;
         next();
     }

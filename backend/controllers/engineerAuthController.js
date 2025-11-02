@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Engineer from "../models/Engineer.js";
+import Engineer from "../models/engineerModel.js";
+import Department from "../models/departmentModel.js";
 
 const signEngineerToken = (engineer) => {
   return jwt.sign(
@@ -12,13 +13,13 @@ const signEngineerToken = (engineer) => {
 
 const cookieOptions = {
   httpOnly: true,
-  secure: true, // set to true for sameSite None; consider toggling by NODE_ENV if needed
+  secure: true, 
   sameSite: "None",
 };
 
 export const registerEngineer = async (req, res) => {
   try {
-    const { name, email, password, department, expertise } = req.body;
+    const { name, email, password, departmentId, expertise } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Name, email, and password are required" });
     }
@@ -31,14 +32,25 @@ export const registerEngineer = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
+    let deptRef = undefined;
+    if (departmentId) {
+      const dept = await Department.findById(departmentId);
+      if (!dept) return res.status(404).json({ error: "Department not found" });
+      deptRef = dept._id;
+    }
+
     const engineer = await Engineer.create({
       name,
       email,
       password: hash,
-      department,
+      department: deptRef,
       expertise,
       role: "engineer",
     });
+
+    if (deptRef) {
+      await Department.findByIdAndUpdate(departmentId, { $push: { engineers: engineer._id } });
+    }
 
     const token = signEngineerToken(engineer);
     res.cookie("engineer_token", token, cookieOptions);
@@ -58,7 +70,7 @@ export const loginEngineer = async (req, res) => {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
-    const engineer = await Engineer.findOne({ email });
+  const engineer = await Engineer.findOne({ email });
     if (!engineer) {
       return res.status(400).json({ error: "Invalid credentials" });
     }

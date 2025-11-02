@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "@/context/userContext";
@@ -13,7 +13,8 @@ export default function EngineerSignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [department, setDepartment] = useState("");
+  const [departmentId, setDepartmentId] = useState("");
+  const [departments, setDepartments] = useState([]);
   const [expertise, setExpertise] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,6 +24,20 @@ export default function EngineerSignUp() {
     [name, email, password, loading]
   );
 
+  useEffect(() => {
+    const loadDepartments = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/departments", { withCredentials: true });
+        const list = Array.isArray(res.data) ? res.data : [];
+        setDepartments(list);
+        if (list.length && !departmentId) setDepartmentId(list[0]._id);
+      } catch (err) {
+        console.log("Failed to load departments", err);
+      }
+    };
+    loadDepartments();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -31,7 +46,7 @@ export default function EngineerSignUp() {
     try {
       const res = await axios.post(
         "http://localhost:5000/api/engineer/register",
-        { name, email, password, department, expertise },
+        { name, email, password, departmentId, expertise },
         { withCredentials: true }
       );
       const engineer = res?.data?.engineer;
@@ -93,7 +108,16 @@ export default function EngineerSignUp() {
               </div>
               <div className="space-y-2">
                 <label htmlFor="department" className="text-sm font-medium">Department</label>
-                <Input id="department" type="text" value={department} onChange={(e) => setDepartment(e.target.value)} />
+                <select
+                  id="department"
+                  className="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                  value={departmentId}
+                  onChange={(e) => setDepartmentId(e.target.value)}
+                >
+                  {departments.map((d) => (
+                    <option key={d._id} value={d._id}>{d.name}</option>
+                  ))}
+                </select>
               </div>
               <div className="space-y-2">
                 <label htmlFor="expertise" className="text-sm font-medium">Expertise</label>

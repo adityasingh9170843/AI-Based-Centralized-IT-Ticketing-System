@@ -33,7 +33,7 @@ const SignUp = () => {
       const user = res?.data?.user || null;
       if (user) {
         updateUser(user);
-        const target = user.role === "admin" ? "/admin" : "/admin";
+        const target = user.role === "admin" ? "/admin" : user.role === "engineer" ? "/engineer" : "/user";
         navigate(target, { replace: true });
       } else {
         setError("Unexpected response. Please try again.");
