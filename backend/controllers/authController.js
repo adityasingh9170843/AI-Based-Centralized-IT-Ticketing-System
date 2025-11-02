@@ -76,3 +76,16 @@ export const logout = (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 };
+
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const user = req.LoggedInUser;
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400);
+    console.log("got error", error);
+    throw new Error(error.message);
+  }
+};
