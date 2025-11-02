@@ -9,6 +9,7 @@ import aiRoutes from "./routes/aiRoutes.js";
 import departmentRoutes from "./routes/departmentRoutes.js";
 import authRoutes from "./routes/authRoute.js";
 import engineerRoutes from "./routes/engineerRoutes.js";
+import engineerAuthRoutes from "./routes/engineerAuthRoutes.js";
 import "./services/emailListener.js";
 
 const app = express();
@@ -26,6 +27,7 @@ dotenv.config({ quiet: true });
 app.use("/api/tickets", ticketRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/engineers", engineerRoutes);
+app.use("/api/engineer", engineerAuthRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/analytic", analyticRoutes);
 app.use("/api/auth", authRoutes);

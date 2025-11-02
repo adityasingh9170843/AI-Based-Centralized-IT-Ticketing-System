@@ -7,6 +7,7 @@ import SignUp from "@/pages/SignUp";
 import Unauthorized from "./pages/Unauthorized";
 import UserDashboard from "./pages/UserDashboard";
 import EngineerDashboard from "./pages/EngineerDashboard";
+import EngineerSignUp from "./pages/EngineerSignUp";
 function App() {
   return (
     <UserProvider>
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/engineer-signup" element={<EngineerSignUp />} />
           <Route
             path="/admin"
             element={<ProtectedRoute allowedRoles={["admin"]} Children={<AdminDashboard />} />}

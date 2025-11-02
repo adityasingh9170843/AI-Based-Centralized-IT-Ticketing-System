@@ -5,7 +5,7 @@ import { UserContext } from "@/context/userContext";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Shield, Loader2 } from "lucide-react";
+import { Shield, Loader2, User } from "lucide-react";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -15,6 +15,7 @@ const Login = () => {
 	const [remember, setRemember] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
+  const [accountType, setAccountType] = useState("user"); // user | engineer
 
 	const canSubmit = useMemo(() => email.trim() && password.trim() && !loading, [email, password, loading]);
 
@@ -24,16 +25,12 @@ const Login = () => {
 		if (!canSubmit) return;
 		setLoading(true);
 		try {
-			const res = await axios.post(
-				"http://localhost:5000/api/auth/login",
-				{ email, password },
-				{ withCredentials: true }
-			);
-			const user = res?.data?.user || null;
+			const url = accountType === "engineer" ? "http://localhost:5000/api/engineer/login" : "http://localhost:5000/api/auth/login";
+			const res = await axios.post(url, { email, password }, { withCredentials: true });
+			const user = res?.data?.user || res?.data?.engineer || null;
 			if (user) {
 				updateUser(user);
-				
-				const target = user.role === "admin" ? "/admin" : "/unauthorized";
+				const target = user.role === "admin" ? "/admin" : user.role === "engineer" ? "/engineer" : "/user";
 				navigate(target, { replace: true });
 			} else {
 				setError("Unexpected response. Please try again.");
@@ -75,9 +72,19 @@ const Login = () => {
 			{/* Login form */}
 			<div className="flex items-center justify-center p-6">
 				<Card className="w-full max-w-md shadow-sm">
-					<CardHeader className="space-y-1">
+					<CardHeader className="space-y-3">
 						<CardTitle className="text-2xl">Sign in to your account</CardTitle>
 						<CardDescription>Access your support dashboard</CardDescription>
+						<div className="flex items-center gap-2 text-sm">
+							<label className="flex items-center gap-2">
+								<input type="radio" name="acct" value="user" checked={accountType === "user"} onChange={() => setAccountType("user")} />
+								User/Admin
+							</label>
+							<label className="flex items-center gap-2">
+								<input type="radio" name="acct" value="engineer" checked={accountType === "engineer"} onChange={() => setAccountType("engineer")} />
+								Engineer
+							</label>
+						</div>
 					</CardHeader>
 					<CardContent>
 						{error ? (
@@ -135,7 +142,9 @@ const Login = () => {
 
 						<p className="mt-6 text-center text-sm text-muted-foreground">
 							Don’t have an account?{" "}
-							<Link to="/signup" className="text-primary hover:underline">Create one</Link>
+							<Link to="/signup" className="text-primary hover:underline">Create user account</Link>
+							{` `}|{` `}
+							<Link to="/engineer-signup" className="text-primary hover:underline">Create engineer account</Link>
 						</p>
 					</CardContent>
 				</Card>
