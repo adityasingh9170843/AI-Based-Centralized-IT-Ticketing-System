@@ -43,7 +43,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await UserModel.findOne({ email });
+  const user = await User.findOne({ email });
     if (!user) {
       res.status(400);
       throw new Error("User does not exist");

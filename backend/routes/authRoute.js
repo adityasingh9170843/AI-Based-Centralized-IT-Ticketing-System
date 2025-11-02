@@ -1,8 +1,8 @@
 import express from "express";
 import { logout, register } from "../controllers/authController.js";   
 import { login } from "../controllers/authController.js";
-import { verify } from "jsonwebtoken";
 import { verifyToken } from "../middleware/authMiddleware.js";
+import { getUserProfile } from "../controllers/authController.js";
 const router = express.Router();
 
 router.post("/register",register)
