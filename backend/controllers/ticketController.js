@@ -13,13 +13,13 @@ export const createTicket = async(req,res)=>{
         console.log(analyzedText.summary);
         
 
-        
-
         const ticket = await Ticket.create({
             title,
             description,
             category:analyzedText.department,
-            priority:analyzedText.priority
+            priority:analyzedText.priority,
+            department: departmentId || undefined,
+            createdBy: req.LoggedInUser?._id
 
         })
 
@@ -162,5 +162,20 @@ export const closeTicket = async(req,res)=>{
     catch(error){
         console.error(error);
         res.status(500).json({error:"Error closing ticket"});
+    }
+}
+
+export const getTicketsByUser = async (req, res) => {
+    try {
+        const userId = req.LoggedInUser?._id;
+        if (!userId) return res.status(401).json({ error: "Unauthorized" });
+        const tickets = await Ticket.find({ createdBy: userId })
+          .populate("assignedEngineer", "name email")
+          .populate("department", "name")
+          .sort({ createdAt: -1 });
+        res.json(tickets);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error fetching your tickets" });
     }
 }
