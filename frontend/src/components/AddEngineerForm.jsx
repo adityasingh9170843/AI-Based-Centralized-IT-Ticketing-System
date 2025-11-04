@@ -1,15 +1,18 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+import axios from "axios"
 
-export default function AddEngineerModal({ onClose }) {
+export default function AddEngineerModal({ onClose}) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [department, setDepartment] = useState("")
+  const[departmentId, setDepartmentId] = useState("")
   const [selectedSkills, setSelectedSkills] = useState([])
   const [skillInput, setSkillInput] = useState("")
+  const [departments, setDepartments] = useState([])
 
   const availableSkills = [
     "AWS",
@@ -24,7 +27,20 @@ export default function AddEngineerModal({ onClose }) {
     "API Design",
   ]
 
-  const departments = ["Infrastructure", "Backend", "Frontend", "Security", "DevOps"]
+  const getDepartments = async () => {
+    try{
+      const response = await axios.get("http://localhost:5000/api/departments/", {withCredentials: true})
+      setDepartments(response.data)
+      console.log(response)
+    }
+    catch(error){
+      console.log(error)
+    }
+  };
+
+  useEffect(() => {
+    getDepartments();
+  },[])
 
   const toggleSkill = (skill) => {
     setSelectedSkills((prev) =>
@@ -34,7 +50,8 @@ export default function AddEngineerModal({ onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log({ name, email, department, selectedSkills })
+    console.log(departmentId)
+    console.log({ name, email, departmentId, selectedSkills })
     onClose()
   }
 
@@ -76,15 +93,16 @@ export default function AddEngineerModal({ onClose }) {
           <div>
             <label className="text-sm font-medium text-muted-foreground block mb-2">Department</label>
             <select
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
+              value={departmentId}
+              onChange={(e) => setDepartmentId(e.target.value)}
+
               className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-foreground"
               required
             >
               <option value="">Select department</option>
               {departments.map((dept) => (
-                <option key={dept} value={dept}>
-                  {dept}
+                <option key={dept._id} value={dept}>
+                  {dept.name}
                 </option>
               ))}
             </select>

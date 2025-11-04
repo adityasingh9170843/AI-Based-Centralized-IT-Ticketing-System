@@ -7,56 +7,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from "@/components/ui/input"
 import { MoreHorizontal, Eye, CheckCircle, Trash2, Filter } from "lucide-react"
 import TicketModal from "./TicketForm"
-const mockTickets = [
-  {
-    id: "TK-001",
-    title: "Database Migration Issue",
-    category: "Database",
-    priority: "high",
-    assignedTo: "John Doe",
-    status: "in-progress",
-    createdAt: "2025-01-15",
-    description: "Migration from PostgreSQL to Neon is failing on production",
-  },
-  {
-    id: "TK-002",
-    title: "Email Configuration",
-    category: "Email",
-    priority: "medium",
-    assignedTo: "Jane Smith",
-    status: "open",
-    createdAt: "2025-01-14",
-    description: "SMTP server configuration needs to be updated",
-  },
-  {
-    id: "TK-003",
-    title: "API Rate Limiting",
-    category: "API",
-    priority: "low",
-    assignedTo: "Mike Johnson",
-    status: "resolved",
-    createdAt: "2025-01-13",
-    description: "Implement rate limiting on REST endpoints",
-  },
-  {
-    id: "TK-004",
-    title: "SSL Certificate Renewal",
-    category: "Security",
-    priority: "high",
-    assignedTo: "Sarah Lee",
-    status: "in-progress",
-    createdAt: "2025-01-12",
-    description: "Renew SSL certificate for main domain",
-  },
-]
+import { useEffect } from "react"
+import axios from "axios"
+
 
 const getPriorityColor = (priority) => {
   switch (priority) {
-    case "high":
+    case "High":
       return "bg-red-500/20 text-red-400 border-red-500/30"
-    case "medium":
+    case "Medium":
       return "bg-orange-500/20 text-orange-400 border-orange-500/30"
-    case "low":
+    case "Low":
       return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
     default:
       return ""
@@ -65,13 +26,13 @@ const getPriorityColor = (priority) => {
 
 const getStatusColor = (status) => {
   switch (status) {
-    case "open":
+    case "Open":
       return "bg-orange-500/20 text-orange-400 border-orange-500/30"
-    case "in-progress":
+    case "In Progress":
       return "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
-    case "resolved":
+    case "Resolved":
       return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-    case "closed":
+    case "Closed":
       return "bg-gray-500/20 text-gray-400 border-gray-500/30"
     default:
       return ""
@@ -82,8 +43,28 @@ export default function TicketsPage() {
   const [selectedTicket, setSelectedTicket] = useState(null)
   const [filterStatus, setFilterStatus] = useState("all")
   const [searchTerm, setSearchTerm] = useState("")
+  const[tickets,setTickets] = useState([]);
+ 
 
-  const filteredTickets = mockTickets.filter((ticket) => {
+ const getTickets = async () => {
+    try{
+      const response = await axios.get("http://localhost:5000/api/tickets/", {withCredentials: true})
+      setTickets(response.data)
+      console.log(response)
+    }
+    catch(error){
+      console.log(error)
+    }
+  };
+
+
+  useEffect(()=>{
+    getTickets()
+  },[])
+
+
+
+  const filteredTickets = tickets.filter((ticket) => {
     const matchesStatus = filterStatus === "all" || ticket.status === filterStatus
     const matchesSearch =
       ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -146,8 +127,8 @@ export default function TicketsPage() {
             </TableHeader>
             <TableBody>
               {filteredTickets.map((ticket) => (
-                <TableRow key={ticket.id} className="border-border hover:bg-muted/20 transition-colors">
-                  <TableCell className="font-mono text-cyan-400">{ticket.id}</TableCell>
+                <TableRow key={ticket._id} className="border-border hover:bg-muted/20 transition-colors">
+                  <TableCell className="font-mono text-cyan-400">{ticket._id}</TableCell>
                   <TableCell className="font-medium text-foreground">{ticket.title}</TableCell>
                   <TableCell className="text-muted-foreground">{ticket.category}</TableCell>
                   <TableCell>
@@ -155,7 +136,7 @@ export default function TicketsPage() {
                       {ticket.priority}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{ticket.assignedTo}</TableCell>
+                  <TableCell className="text-muted-foreground">{ticket.assignedEngineer.name}</TableCell>
                   <TableCell>
                     <Badge className={`${getStatusColor(ticket.status)} border capitalize`}>
                       {ticket.status.replace("-", " ")}

@@ -13,11 +13,23 @@ export default function EngineersPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [selectedEngineer, setSelectedEngineer] = useState(null)
   const [Engineer, setEngineer] = useState([])
+  const [Departments, setDepartments] = useState([])
 
   const getEngineers = async () => {
     try{
-      const response = await axios.get("http://localhost:5000/api/engineers/")
+      const response = await axios.get("http://localhost:5000/api/engineers/", {withCredentials: true})
       setEngineer(response.data)
+      console.log(response)
+    }
+    catch(error){
+      console.log(error)
+    }
+  };
+
+  const getDepartments = async () => {
+    try{
+      const response = await axios.get("http://localhost:5000/api/departments/", {withCredentials: true})
+      setDepartments(response.data)
       console.log(response)
     }
     catch(error){
@@ -28,6 +40,7 @@ export default function EngineersPage() {
 
   useEffect(()=>{
     getEngineers()
+    getDepartments()
   },[])
 
   return (
@@ -104,7 +117,15 @@ export default function EngineersPage() {
         ))}
       </div>
 
-      {isAddModalOpen && <AddEngineerModal onClose={() => setIsAddModalOpen(false)} />}
+      {isAddModalOpen && (
+        <AddEngineerModal
+          departments={Departments}
+          onClose={(refresh) => {
+            setIsAddModalOpen(false)
+            if (refresh) getEngineers()
+          }}
+        />
+      )}
 
       {selectedEngineer && (
         <Dialog open={!!selectedEngineer} onOpenChange={() => setSelectedEngineer(null)}>

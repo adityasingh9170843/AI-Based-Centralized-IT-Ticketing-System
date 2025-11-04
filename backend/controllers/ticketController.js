@@ -179,3 +179,16 @@ export const getTicketsByUser = async (req, res) => {
         res.status(500).json({ error: "Error fetching your tickets" });
     }
 }
+
+export const getallTickets = async (req, res) => {
+    try {
+      const tickets = await Ticket.find({})
+        .populate("assignedEngineer", "name email")
+        .populate("department", "name")
+        .sort({ createdAt: -1 });
+      res.json(tickets);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error fetching tickets" });
+    }
+  };
