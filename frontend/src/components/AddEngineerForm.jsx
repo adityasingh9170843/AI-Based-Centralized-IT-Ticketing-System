@@ -62,10 +62,10 @@ export default function AddEngineerModal({ onClose}) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="bg-card border-border max-w-2xl">
+  <DialogContent className="max-w-2xl border border-border/70 bg-card backdrop-blur">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-foreground">Add New Engineer</DialogTitle>
-          <DialogDescription className="text-muted-foreground">
+          <DialogTitle className="text-2xl text-foreground/90">Add New Engineer</DialogTitle>
+          <DialogDescription className="text-muted-foreground/80">
             Fill in the details to add a new team member
           </DialogDescription>
         </DialogHeader>
@@ -76,13 +76,13 @@ export default function AddEngineerModal({ onClose}) {
            
             <div>
               <label className="text-sm font-medium text-muted-foreground block mb-2">Name</label>
-              <Input value={name} onChange={(e)=>setName(e.target.value)} required />
+              <Input value={name} onChange={(e)=>setName(e.target.value)} className="bg-muted border border-border/60" required />
             </div>
 
            
             <div>
               <label className="text-sm font-medium text-muted-foreground block mb-2">Email</label>
-              <Input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
+              <Input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} className="bg-muted border border-border/60" required />
             </div>
 
            
@@ -93,7 +93,7 @@ export default function AddEngineerModal({ onClose}) {
                 value={password}
                 onChange={(e)=>setPassword(e.target.value)}
                 placeholder="Default: 12345"
-                className="bg-muted border-border"
+                className="bg-muted border border-border/60"
                 required
               />
               <p className="text-xs text-muted-foreground mt-1">
@@ -109,7 +109,7 @@ export default function AddEngineerModal({ onClose}) {
               value={departmentId}
               onChange={(e) => setDepartmentId(e.target.value)}
 
-              className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-foreground"
+              className="w-full px-3 py-2 rounded-lg border border-border/60 bg-muted text-foreground"
               required
             >
               <option value="">Select department</option>
@@ -131,7 +131,7 @@ export default function AddEngineerModal({ onClose}) {
                   onClick={() => toggleSkill(skill)}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                     selectedSkills.includes(skill)
-                      ? "bg-blue-500 text-white"
+                      ? "bg-primary/80 text-primary-foreground shadow-sm"
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
                   }`}
                 >
@@ -144,7 +144,7 @@ export default function AddEngineerModal({ onClose}) {
                 {selectedSkills.map((skill) => (
                   <Badge
                     key={skill}
-                    className="bg-blue-500/20 text-blue-400 border-blue-500/30 border"
+                    className="bg-primary/15 text-primary border border-primary/40"
                   >
                     {skill}
                   </Badge>
@@ -153,14 +153,14 @@ export default function AddEngineerModal({ onClose}) {
             )}
           </div>
 
-          <div className="flex gap-3 pt-4 border-t border-border">
-            <Button type="submit" className="flex-1 bg-blue-500 hover:bg-blue-600">
+          <div className="flex gap-3 pt-4 border-t border-border/60">
+            <Button type="submit" className="flex-1 border border-primary/50 bg-primary/80 hover:bg-primary">
               Add Engineer
             </Button>
             <Button
               type="button"
               variant="outline"
-              className="flex-1 border-border bg-muted hover:bg-muted/80"
+              className="flex-1 border border-border/60 bg-muted hover:bg-muted/80"
               onClick={onClose}
             >
               Cancel

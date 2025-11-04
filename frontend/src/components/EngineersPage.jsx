@@ -45,44 +45,48 @@ export default function EngineersPage() {
 
   return (
     <div className="p-8">
-      <div className="flex justify-between items-start mb-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Support Team</h1>
-          <p className="text-muted-foreground">Manage your support engineers and their specializations</p>
+          <h1 className="text-3xl font-semibold text-foreground mb-2 tracking-tight">Support Team</h1>
+          <p className="text-muted-foreground/90 text-sm">Manage engineers, track domain expertise, and keep assignments flowing.</p>
         </div>
-        <Button onClick={() => setIsAddModalOpen(true)} className="bg-primary hover:bg-primary/90 gap-2">
+        <Button
+          onClick={() => setIsAddModalOpen(true)}
+          className="inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-linear-to-r from-primary/20 via-primary/10 to-transparent px-4 py-2 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50"
+        >
           <Plus className="w-4 h-4" />
           Add Member
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {Engineer.map((engineer) => (
           <Card
             key={engineer._id}
-            className="bg-card border-border hover:shadow-lg transition-shadow cursor-pointer group hover:border-primary/50"
+            className="relative cursor-pointer overflow-hidden border border-border/60 bg-card/80 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40"
             onClick={() => setSelectedEngineer(engineer)}
           >
-            <CardHeader className="pb-3">
+            <span className="pointer-events-none absolute inset-0 bg-linear-to-br from-white/3 via-transparent to-transparent" />
+            <CardHeader className="relative pb-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="text-lg text-foreground">{engineer.name}</CardTitle>
-                  <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
+                  <CardTitle className="text-lg font-semibold text-foreground/90 tracking-tight">{engineer.name}</CardTitle>
+                  <p className="text-xs font-medium text-muted-foreground/80 uppercase mt-2 flex items-center gap-2">
                     <Briefcase className="w-3 h-3" />
-                    {engineer.department?.name}
+                    {engineer.department?.name || "Unassigned"}
                   </p>
                 </div>
-                <div className="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center group-hover:shadow-lg transition-shadow">
-                  <Award className="w-6 h-6 text-white" />
+                <div className="w-11 h-11 rounded-xl border border-border/50 bg-muted/40 flex items-center justify-center shadow-sm">
+                  <Award className="w-5 h-5 text-primary/80" />
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="relative space-y-4">
               <div>
-                <p className="text-xs font-medium text-muted-foreground uppercase mb-2">Expertise</p>
-                <div className="flex flex-wrap gap-2">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.16em]">Expertise</p>
+                <div className="mt-2 flex flex-wrap gap-2">
                   {engineer.expertise.map((skill, idx) => (
-                    <Badge key={idx} className="bg-primary/20 text-primary border-primary/30 border text-xs">
+                    <Badge key={idx} className="bg-muted/40 text-muted-foreground border border-border/40 text-xs tracking-wide">
                       {skill}
                     </Badge>
                   ))}
@@ -90,21 +94,21 @@ export default function EngineersPage() {
               </div>
 
               <div>
-                <p className="text-xs font-medium text-muted-foreground uppercase mb-2">Contact</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.16em]">Contact</p>
                 <a
                   href={`mailto:${engineer.email}`}
-                  className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 transition-colors"
+                  className="mt-2 inline-flex items-center gap-2 text-sm text-foreground/80 transition-colors hover:text-primary"
                 >
-                  <Mail className="w-3 h-3" />
+                  <Mail className="w-4 h-4" />
                   {engineer.email}
                 </a>
               </div>
 
-              <div className="pt-3 border-t border-border">
-                <p className="text-sm font-medium text-foreground">{engineer.tickets.length} Active Tickets</p>
+              <div className="pt-4 border-t border-border/40">
+                <p className="text-sm font-medium text-foreground/90">{engineer.tickets.length} Active Tickets</p>
                 <Button
                   variant="outline"
-                  className="w-full mt-3 border-border bg-muted hover:bg-muted/80"
+                  className="mt-3 w-full rounded-lg border-border/50 bg-muted/30 text-muted-foreground hover:text-foreground"
                   onClick={(e) => {
                     e.stopPropagation()
                   }}
@@ -129,9 +133,9 @@ export default function EngineersPage() {
 
       {selectedEngineer && (
         <Dialog open={!!selectedEngineer} onOpenChange={() => setSelectedEngineer(null)}>
-          <DialogContent className="bg-card border-border max-w-md">
+          <DialogContent className="bg-card/90 border border-border/60 backdrop-blur max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-foreground">{selectedEngineer.name}</DialogTitle>
+              <DialogTitle className="text-foreground/90">{selectedEngineer.name}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
@@ -142,7 +146,7 @@ export default function EngineersPage() {
                 <p className="text-sm font-medium text-muted-foreground mb-2">Expertise</p>
                 <div className="flex flex-wrap gap-2">
                   {selectedEngineer.expertise.map((skill, idx) => (
-                    <Badge key={idx} className="bg-primary/20 text-primary border-primary/30 border">
+                    <Badge key={idx} className="bg-muted/40 text-muted-foreground border border-border/40">
                       {skill}
                     </Badge>
                   ))}

@@ -44,9 +44,10 @@ const Login = () => {
 	};
 
 		return (
-			<div className="min-h-screen w-full grid lg:grid-cols-2 bg-[radial-gradient(1200px_600px_at_-10%_-10%,--theme(--color-accent/40),transparent),radial-gradient(1000px_500px_at_110%_110%,--theme(--color-primary/10),transparent)]">
-			{/* Brand / value prop */}
-			<div className="hidden lg:flex flex-col justify-between p-10 bg-card/40 border-r">
+			<div className="min-h-screen w-full grid lg:grid-cols-2 relative overflow-hidden">
+			<div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_0%_0%,var(--color-primary)/12,transparent),radial-gradient(140%_120%_at_100%_0%,oklch(0.3_0.04_250_/0.18),transparent)]" />
+		{/* Brand / value prop */}
+		<div className="hidden lg:flex flex-col justify-between p-12 border-r border-border/40 relative backdrop-blur bg-card/60 supports-backdrop-filter:bg-card/50">
 				<div className="flex items-center gap-3">
 					<div className="h-10 w-10 rounded-lg bg-primary text-primary-foreground grid place-items-center">
 						<Shield className="h-5 w-5" />
@@ -70,8 +71,8 @@ const Login = () => {
 			</div>
 
 			{/* Login form */}
-			<div className="flex items-center justify-center p-6">
-				<Card className="w-full max-w-md shadow-sm">
+			<div className="flex items-center justify-center p-6 relative">
+				<Card className="w-full max-w-md border border-border/60 bg-card/85 backdrop-blur shadow-[0_20px_60px_-30px_var(--color-primary)]">
 					<CardHeader className="space-y-3">
 						<CardTitle className="text-2xl">Sign in to your account</CardTitle>
 						<CardDescription>Access your support dashboard</CardDescription>

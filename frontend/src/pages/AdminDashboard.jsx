@@ -21,11 +21,14 @@ function AdminDashboard() {
     }
   }
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen text-foreground">
       <Sidebar currentPage={currentPage} onPageChange={setCurrentPage} />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Navbar />
-        <main className="flex-1 overflow-auto bg-background relative">{renderPage()}</main>
+        <main className="flex-1 overflow-auto relative">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,var(--color-primary)/12,transparent)]" />
+          <div className="relative">{renderPage()}</div>
+        </main>
       </div>
     </div>
   )

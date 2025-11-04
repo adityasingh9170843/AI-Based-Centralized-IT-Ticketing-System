@@ -7,29 +7,33 @@ export default function Dashboard() {
       title: "Open Tickets",
       value: "24",
       icon: AlertCircle,
-      color: "text-orange-400",
-      bgColor: "bg-orange-500/10",
+      tone: "text-amber-300",
+      chip: "from-amber-400/20 via-amber-400/10 to-transparent",
+      delta: "↑ 4.1%",
     },
     {
       title: "In Progress",
       value: "42",
       icon: Clock,
-      color: "text-cyan-400",
-      bgColor: "bg-cyan-500/10",
+      tone: "text-cyan-300",
+      chip: "from-cyan-400/25 via-cyan-400/10 to-transparent",
+      delta: "↔ stable",
     },
     {
       title: "Resolved Today",
       value: "18",
       icon: CheckCircle,
-      color: "text-emerald-400",
-      bgColor: "bg-emerald-500/10",
+      tone: "text-emerald-300",
+      chip: "from-emerald-400/25 via-emerald-400/10 to-transparent",
+      delta: "↑ 12%",
     },
     {
       title: "Support Team",
       value: "12",
       icon: Users,
-      color: "text-blue-400",
-      bgColor: "bg-blue-500/10",
+      tone: "text-blue-300",
+      chip: "from-blue-400/25 via-blue-400/12 to-transparent",
+      delta: "+2 hires",
     },
   ]
 
@@ -44,18 +48,22 @@ export default function Dashboard() {
         {stats.map((stat, index) => {
           const Icon = stat.icon
           return (
-            <Card key={index} className="bg-card border-border hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-3">
+            <Card
+              key={index}
+              className="relative overflow-hidden border border-border/60 bg-card/80 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 shadow-sm"
+            >
+              <span className="pointer-events-none absolute inset-0 bg-linear-to-br from-white/4 via-transparent to-transparent opacity-70" />
+              <CardHeader className="pb-3 relative">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
-                  <div className={`${stat.bgColor} p-2 rounded-lg`}>
-                    <Icon className={`w-5 h-5 ${stat.color}`} />
+                  <CardTitle className="text-sm font-medium text-muted-foreground/90 tracking-wide">{stat.title}</CardTitle>
+                  <div className={`p-2 rounded-lg border border-border/50 bg-linear-to-br ${stat.chip}`}>
+                    <Icon className={`w-5 h-5 ${stat.tone}`} />
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-                <p className="text-xs text-emerald-400 mt-2">↓ 8% from yesterday</p>
+              <CardContent className="relative">
+                <div className="text-3xl font-semibold text-foreground tracking-tight">{stat.value}</div>
+                <p className="text-xs text-muted-foreground mt-2">{stat.delta} vs last 24h</p>
               </CardContent>
             </Card>
           )
@@ -63,15 +71,17 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 bg-card border-border">
-          <CardHeader>
-            <CardTitle>Recent Support Activity</CardTitle>
+        <Card className="lg:col-span-2 bg-card/80 border border-border/60 backdrop-blur hover:border-primary/30 transition-colors">
+          <CardHeader className="border-b border-border/40">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold tracking-wide text-muted-foreground/80">
+              Recent Support Activity
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {[1, 2, 3, 4].map((item) => (
-                <div key={item} className="flex items-start gap-4 pb-4 border-b border-border last:border-0">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 shrink-0" />
+                <div key={item} className="flex items-start gap-4 pb-4 border-b border-border/40 last:border-0">
+                  <div className="w-2 h-2 bg-primary/60 rounded-full mt-2 shrink-0 shadow-[0_0_8px_var(--color-primary)/40]" />
                   <div>
                     <p className="font-medium text-foreground">Ticket #TK-{1000 + item} updated</p>
                     <p className="text-sm text-muted-foreground">Support team responded to customer inquiry</p>
@@ -83,21 +93,21 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle>Team Performance</CardTitle>
+        <Card className="bg-card/80 border border-border/60 backdrop-blur hover:border-primary/30 transition-colors">
+          <CardHeader className="border-b border-border/40">
+            <CardTitle className="text-sm font-semibold tracking-wide text-muted-foreground/80">Team Performance</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {["John Doe", "Jane Smith", "Mike Johnson"].map((engineer, idx) => (
                 <div key={idx}>
                   <div className="flex justify-between items-center mb-2">
-                    <p className="text-sm font-medium text-foreground">{engineer}</p>
-                    <p className="text-sm text-cyan-400">{95 - idx * 5}%</p>
+                    <p className="text-sm font-medium text-foreground/90">{engineer}</p>
+                    <p className="text-sm text-muted-foreground">{95 - idx * 5}%</p>
                   </div>
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-muted/40 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-green-400"
+                      className="h-full bg-primary/70"
                       style={{ width: `${95 - idx * 5}%` }}
                     />
                   </div>
