@@ -62,7 +62,7 @@ export default function TicketModal({ ticket, isOpen, onClose }) {
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground block mb-2">Assigned To</label>
-              <p className="text-foreground">{ticket.assignedTo}</p>
+              <p className="text-foreground">{ticket.assignedEngineer.name}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground block mb-2">Status</label>

@@ -8,6 +8,7 @@ import axios from "axios"
 export default function AddEngineerModal({ onClose}) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("12345") 
   
   const[departmentId, setDepartmentId] = useState("")
   const [selectedSkills, setSelectedSkills] = useState([])
@@ -15,23 +16,16 @@ export default function AddEngineerModal({ onClose}) {
   const [departments, setDepartments] = useState([])
 
   const availableSkills = [
-    "AWS",
-    "Azure",
-    "Kubernetes",
-    "Docker",
-    "Node.js",
-    "Python",
-    "React",
-    "TypeScript",
-    "Database",
-    "API Design",
+    "AWS","Azure","Kubernetes","Docker",
+    "Node.js","Python","React","TypeScript",
+    "Database","API Design","Gmail password reset",
+    "Slack password reset","Outlook password reset",
   ]
 
   const getDepartments = async () => {
     try{
       const response = await axios.get("http://localhost:5000/api/departments/", {withCredentials: true})
       setDepartments(response.data)
-      console.log(response)
     }
     catch(error){
       console.log(error)
@@ -43,20 +37,25 @@ export default function AddEngineerModal({ onClose}) {
   },[])
 
   const toggleSkill = (skill) => {
-    setSelectedSkills((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
+    setSelectedSkills(prev =>
+      prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
     )
   }
 
   const handleSubmit = async(e) => {
     e.preventDefault()
-    console.log(departmentId)
-    console.log({ name, email, departmentId, selectedSkills })
+
     try{
-      
+      const response = await axios.post(
+        "http://localhost:5000/api/engineer/register",
+        { name, email, password, departmentId, expertise: selectedSkills },  
+        {withCredentials: true}
+      )
+
+      console.log(response)
     }
     catch(error){
-      
+      console.log(error)
     }
     onClose()
   }
@@ -73,27 +72,35 @@ export default function AddEngineerModal({ onClose}) {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
+
+           
             <div>
               <label className="text-sm font-medium text-muted-foreground block mb-2">Name</label>
-              <Input
-                placeholder="Full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="bg-muted border-border"
-                required
-              />
+              <Input value={name} onChange={(e)=>setName(e.target.value)} required />
             </div>
+
+           
             <div>
               <label className="text-sm font-medium text-muted-foreground block mb-2">Email</label>
+              <Input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
+            </div>
+
+           
+            <div className="col-span-2">
+              <label className="text-sm font-medium text-muted-foreground block mb-2">Temporary Password</label>
               <Input
-                type="email"
-                placeholder="engineer@company.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
+                placeholder="Default: 12345"
                 className="bg-muted border-border"
                 required
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                This password will be changed later by the engineer.
+              </p>
             </div>
+
           </div>
 
           <div>

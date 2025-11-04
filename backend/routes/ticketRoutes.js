@@ -8,15 +8,15 @@ import {
   getTicketsByUser,
   getallTickets
 } from "../controllers/ticketController.js";
-import { verifyToken,authorizeRoles } from "../middleware/authMiddleware.js";
+import { verifyToken,authorizeRoles, protectEngineer } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.post("/create",verifyToken,authorizeRoles("user"), createTicket);
 router.get("/",verifyToken,authorizeRoles("admin"), getallTickets);
 router.get("/user/my", verifyToken, authorizeRoles("user"), getTicketsByUser);
-router.get("/enginner/:id",verifyToken,authorizeRoles("engineer"), getTicketsByEngineer);
+router.get("/engineer/:id", protectEngineer, getTicketsByEngineer);
 router.put("/assign/:ticketId/:engineerId",verifyToken,authorizeRoles("admin"), assignTicket);
-router.put("/resolve/:ticketId",verifyToken,authorizeRoles("engineer"), addResolution);
-router.put("/close/:ticketId",verifyToken,authorizeRoles("admin"), closeTicket);  
+router.put("/resolve/:ticketId", protectEngineer, addResolution);
+router.put("/close/:ticketId",verifyToken,authorizeRoles("admin"), closeTicket);
 export default router;

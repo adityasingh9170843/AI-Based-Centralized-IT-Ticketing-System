@@ -118,11 +118,14 @@ export const addResolution = async(req,res)=>{
             return res.status(404).json({error:"Ticket not found"});
         }
         ticket.resolution = resolution;
-        ticket.status = "resolved";
-        ticket.comment.push({
-            author:"Engineer",
-            message:`${resolution}`
-        })
+        // Use the canonical enum value "Resolved"
+        ticket.status = "Resolved";
+        // push into the comments array (model uses 'comments') and set the author to the engineer id when available
+        const authorId = req.engineer?._id || req.LoggedInUser?._id || null;
+        ticket.comments.push({
+            author: authorId,
+            message: `${resolution}`,
+        });
         await ticket.save();
         res.json(ticket);
     }
@@ -142,15 +145,16 @@ export const closeTicket = async(req,res)=>{
             return res.status(404).json({error:"Ticket not found"});
         }
 
-        if(ticket.status!=="Resolved"){
+        // allow case-insensitive checking of resolved status
+        if(String(ticket.status).toLowerCase() !== "resolved"){
             return res.status(400).json({error:"Ticket is not resolved"});
         }
 
         ticket.status = "Closed";
-        ticket.comment.push({
-            author:"Admin",
-            message:`Closing the Ticket,Issue Resolved`
-        })
+        ticket.comments.push({
+            author: adminId,
+            message: `Closing the Ticket, Issue Resolved`,
+        });
         ticket.closedBy = adminId;
         ticket.closedAt = Date.now();
         await ticket.save();

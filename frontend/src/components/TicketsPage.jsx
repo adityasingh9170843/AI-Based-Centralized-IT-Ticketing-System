@@ -57,6 +57,24 @@ export default function TicketsPage() {
     }
   };
 
+  const closeTicket = async (ticketId) => {
+    const ok = window.confirm("Are you sure you want to close this ticket?")
+    if (!ok) return
+    try {
+      await axios.put(
+        `http://localhost:5000/api/tickets/close/${ticketId}`,
+        {},
+        { withCredentials: true }
+      )
+      // refresh list
+      getTickets()
+    } catch (err) {
+      console.error("Failed to close ticket", err)
+      const msg = err?.response?.data?.error || err.message
+      alert(`Failed to close ticket: ${msg}`)
+    }
+  }
+
 
   useEffect(()=>{
     getTickets()
@@ -159,7 +177,10 @@ export default function TicketsPage() {
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Assign Support
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer text-red-400">
+                        <DropdownMenuItem
+                          className="cursor-pointer text-red-400"
+                          onClick={() => closeTicket(ticket._id)}
+                        >
                           <Trash2 className="w-4 h-4 mr-2" />
                           Close Ticket
                         </DropdownMenuItem>
@@ -174,7 +195,7 @@ export default function TicketsPage() {
       </Card>
 
       {selectedTicket && (
-        <TicketModal ticket={selectedTicket} isOpen={!!selectedTicket} onClose={() => setSelectedTicket(null)} />
+        <TicketModal ticket={selectedTicket} isOpen={!!selectedTicket} onClose={() => setSelectedTicket(null)}  />
       )}
     </div>
   )
