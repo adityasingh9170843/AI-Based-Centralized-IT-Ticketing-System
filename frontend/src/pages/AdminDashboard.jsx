@@ -5,6 +5,7 @@ import Dashboard from '@/components/Dashboard'
 import TicketsPage from '@/components/TicketsPage'
 import EngineersPage from '@/components/EngineersPage'
 import { useState } from 'react'
+import DepartmentsPage from '@/components/DepartmentsPage'
 function AdminDashboard() {
     const [currentPage, setCurrentPage] = useState("dashboard");
     const renderPage = () => {
@@ -13,6 +14,8 @@ function AdminDashboard() {
         return <EngineersPage />
       case "tickets":
         return <TicketsPage />
+      case "departments":
+        return <DepartmentsPage/>
       default:
         return <Dashboard />
     }

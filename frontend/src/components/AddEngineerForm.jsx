@@ -8,7 +8,7 @@ import axios from "axios"
 export default function AddEngineerModal({ onClose}) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
-  const [department, setDepartment] = useState("")
+  
   const[departmentId, setDepartmentId] = useState("")
   const [selectedSkills, setSelectedSkills] = useState([])
   const [skillInput, setSkillInput] = useState("")
@@ -48,10 +48,16 @@ export default function AddEngineerModal({ onClose}) {
     )
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
     console.log(departmentId)
     console.log({ name, email, departmentId, selectedSkills })
+    try{
+      
+    }
+    catch(error){
+      
+    }
     onClose()
   }
 
@@ -101,7 +107,7 @@ export default function AddEngineerModal({ onClose}) {
             >
               <option value="">Select department</option>
               {departments.map((dept) => (
-                <option key={dept._id} value={dept}>
+                <option key={dept._id} value={dept._id}>
                   {dept.name}
                 </option>
               ))}

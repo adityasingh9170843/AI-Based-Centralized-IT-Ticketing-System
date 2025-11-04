@@ -6,6 +6,7 @@ export default function Sidebar({ currentPage, onPageChange }) {
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "tickets", label: "Support Tickets", icon: Ticket },
     { id: "engineers", label: "Support Team", icon: Users },
+    { id: "departments", label: "departments", icon: Users },
   ]
 
   return (
