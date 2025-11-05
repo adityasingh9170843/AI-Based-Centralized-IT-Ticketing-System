@@ -76,13 +76,13 @@ export default function EngineerSignUp() {
           <div className="h-10 w-10 rounded-lg bg-primary text-primary-foreground grid place-items-center">
             <Shield className="h-5 w-5" />
           </div>
-          <span className="font-semibold tracking-tight">Aegis Support</span>
+          <span className="font-semibold tracking-tight">Smart Support</span>
         </div>
         <div className="space-y-6">
           <h1 className="text-3xl font-semibold leading-tight">Engineer sign up</h1>
           <p className="text-muted-foreground max-w-md">Provide your details to access the engineer workspace.</p>
         </div>
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Aegis Support. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Smart Support. All rights reserved.</p>
       </div>
 
       <div className="flex items-center justify-center p-6">

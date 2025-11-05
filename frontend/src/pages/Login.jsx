@@ -52,7 +52,7 @@ const Login = () => {
 					<div className="h-10 w-10 rounded-lg bg-primary text-primary-foreground grid place-items-center">
 						<Shield className="h-5 w-5" />
 					</div>
-					<span className="font-semibold tracking-tight">Aegis Support</span>
+					<span className="font-semibold tracking-tight">Smart Support</span>
 				</div>
 				<div className="space-y-6">
 					<h1 className="text-3xl font-semibold leading-tight">
@@ -67,7 +67,7 @@ const Login = () => {
 						<li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> Built‑in SLAs and insights</li>
 					</ul>
 				</div>
-				<p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Aegis Support. All rights reserved.</p>
+				<p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Smart Support. All rights reserved.</p>
 			</div>
 
 			{/* Login form */}

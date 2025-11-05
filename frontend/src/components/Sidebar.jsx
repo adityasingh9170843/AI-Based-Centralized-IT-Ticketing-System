@@ -19,7 +19,7 @@ export default function Sidebar({ currentPage, onPageChange }) {
               <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-sidebar-foreground tracking-tight">Aegis Support</h1>
+              <h1 className="text-lg font-semibold text-sidebar-foreground tracking-tight">Smart Support</h1>
               <p className="text-xs text-muted-foreground/80">Command Center</p>
             </div>
           </div>
