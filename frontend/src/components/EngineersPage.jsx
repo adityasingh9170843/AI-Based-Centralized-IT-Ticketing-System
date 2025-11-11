@@ -106,15 +106,7 @@ export default function EngineersPage() {
 
               <div className="pt-4 border-t border-border/40">
                 <p className="text-sm font-medium text-foreground/90">{engineer.tickets.length} Active Tickets</p>
-                <Button
-                  variant="outline"
-                  className="mt-3 w-full rounded-lg border-border/50 bg-muted/30 text-muted-foreground hover:text-foreground"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                  }}
-                >
-                  View Performance
-                </Button>
+                
               </div>
             </CardContent>
           </Card>

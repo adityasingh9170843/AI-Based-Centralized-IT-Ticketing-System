@@ -77,7 +77,7 @@ export default function TicketModal({ ticket, isOpen, onClose }) {
             <Card className="bg-muted/50 border-border">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground italic">
-                  {ticket.status === "resolved"
+                  {ticket.status === "Resolved"
                     ? "Issue has been resolved successfully."
                     : "No resolution notes yet."}
                 </p>
@@ -86,7 +86,7 @@ export default function TicketModal({ ticket, isOpen, onClose }) {
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-border">
-            <Button className="flex-1 bg-blue-500 hover:bg-blue-600">Assign Engineer</Button>
+           
             <Button
               variant="outline"
               className="flex-1 border-border bg-muted hover:bg-muted/80"
