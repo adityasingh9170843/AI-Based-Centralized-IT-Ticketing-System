@@ -18,7 +18,7 @@ export default function Navbar() {
       <div className="flex items-center gap-3 lg:gap-5">
         <button className="relative flex items-center justify-center w-9 h-9 rounded-xl border border-border/50 bg-muted/30 hover:border-primary/40 transition-all">
           <Bell className="w-4 h-4 text-muted-foreground" />
-          <span className="absolute -top-1 -right-1 inline-flex h-2.5 w-2.5 rounded-full bg-primary animate-[pulse_2s_ease-in-out_infinite]" />
+           <span className="absolute -top-1 -right-1 inline-flex h-2.5 w-2.5 rounded-full bg-primary animate-[pulse_2s_ease-in-out_infinite]" />
         </button>
         <button className="relative flex items-center justify-center w-9 h-9 rounded-xl border border-border/50 bg-muted/30 hover:border-primary/40 transition-all">
           <MessageSquare className="w-4 h-4 text-muted-foreground" />

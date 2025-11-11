@@ -109,7 +109,7 @@ export default function AddEngineerModal({ onClose}) {
               value={departmentId}
               onChange={(e) => setDepartmentId(e.target.value)}
 
-              className="w-full px-3 py-2 rounded-lg border border-border/60 bg-muted text-foreground"
+              className="w-full px-3 py-2 rounded-lg border border-border/60 bg-black text-foreground"
               required
             >
               <option value="">Select department</option>

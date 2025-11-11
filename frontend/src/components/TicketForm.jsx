@@ -36,7 +36,7 @@ export default function TicketModal({ ticket, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-card border-border max-w-2xl">
+      <DialogContent className="bg-black border-border max-w-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl text-foreground">{ticket.title}</DialogTitle>
           <DialogDescription className="text-muted-foreground">{ticket.id}</DialogDescription>

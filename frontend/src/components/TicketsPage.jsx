@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from "@/components/ui/input"
 import { MoreHorizontal, Eye, CheckCircle, Trash2, Filter } from "lucide-react"
 import TicketModal from "./TicketForm"
+import AssignEngineerDialog from "./AssignEngineerDialog"
 import { useEffect } from "react"
 import axios from "axios"
 
@@ -44,6 +45,7 @@ export default function TicketsPage() {
   const [filterStatus, setFilterStatus] = useState("all")
   const [searchTerm, setSearchTerm] = useState("")
   const[tickets,setTickets] = useState([]);
+  const [ticketToAssign, setTicketToAssign] = useState(null)
  
 
  const getTickets = async () => {
@@ -177,7 +179,10 @@ export default function TicketsPage() {
                           <Eye className="w-4 h-4 mr-2" />
                           View Details
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
+                        <DropdownMenuItem 
+                          className="cursor-pointer"
+                          onClick={() => setTicketToAssign(ticket)}
+                        >
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Assign Support
                         </DropdownMenuItem>
@@ -200,6 +205,18 @@ export default function TicketsPage() {
 
       {selectedTicket && (
         <TicketModal ticket={selectedTicket} isOpen={!!selectedTicket} onClose={() => setSelectedTicket(null)}  />
+      )}
+
+      {ticketToAssign && (
+        <AssignEngineerDialog
+          ticket={ticketToAssign}
+          isOpen={!!ticketToAssign}
+          onClose={() => setTicketToAssign(null)}
+          onAssignSuccess={() => {
+            getTickets()
+            setTicketToAssign(null)
+          }}
+        />
       )}
     </div>
   )
