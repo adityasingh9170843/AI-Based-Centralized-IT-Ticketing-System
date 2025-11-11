@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Shield, Loader2 } from "lucide-react";
+import API_URL from "@/config/api";
 
 export default function EngineerSignUp() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function EngineerSignUp() {
   useEffect(() => {
     const loadDepartments = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/departments", { withCredentials: true });
+        const res = await axios.get(`${API_URL}/api/departments`, { withCredentials: true });
         const list = Array.isArray(res.data) ? res.data : [];
         setDepartments(list);
         if (list.length && !departmentId) setDepartmentId(list[0]._id);
@@ -50,7 +51,7 @@ export default function EngineerSignUp() {
         ? expertise.split(/[\n,]/).map((s) => s.trim()).filter(Boolean)
         : [];
       const res = await axios.post(
-        "http://localhost:5000/api/engineer/register",
+        `${API_URL}/api/engineer/register`,
         { name, email, password, departmentId, expertise: expertiseArray },
         { withCredentials: true }
       );

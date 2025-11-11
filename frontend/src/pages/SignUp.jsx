@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Shield, Loader2 } from "lucide-react";
+import API_URL from "@/config/api";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const SignUp = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${API_URL}/api/auth/register`,
         { name, email, password, role },
         { withCredentials: true }
       );

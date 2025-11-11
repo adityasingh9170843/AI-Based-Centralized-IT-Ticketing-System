@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import axios from "axios"
+import API_URL from "@/config/api"
 
 export default function DepartmentsPage() {
   const [departments, setDepartments] = useState([])
@@ -16,7 +17,7 @@ export default function DepartmentsPage() {
 
   const fetchDepartments = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/departments/", { withCredentials: true })
+      const res = await axios.get(`${API_URL}/api/departments/`, { withCredentials: true })
       setDepartments(res.data || [])
     } catch (err) {
       console.error("Failed to load departments", err)
@@ -38,7 +39,7 @@ export default function DepartmentsPage() {
     setSaving(true)
     try {
       await axios.post(
-        "http://localhost:5000/api/departments/",
+        `${API_URL}/api/departments/`,
         { name: name.trim(), description: description.trim() },
         { withCredentials: true }
       )

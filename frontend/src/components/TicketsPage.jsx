@@ -10,6 +10,7 @@ import TicketModal from "./TicketForm"
 import AssignEngineerDialog from "./AssignEngineerDialog"
 import { useEffect } from "react"
 import axios from "axios"
+import API_URL from "@/config/api"
 
 
 const getPriorityColor = (priority) => {
@@ -50,7 +51,7 @@ export default function TicketsPage() {
 
  const getTickets = async () => {
     try{
-      const response = await axios.get("http://localhost:5000/api/tickets/", {withCredentials: true})
+      const response = await axios.get(`${API_URL}/api/tickets/`, {withCredentials: true})
       setTickets(response.data)
       console.log(response)
     }
@@ -64,7 +65,7 @@ export default function TicketsPage() {
     if (!ok) return
     try {
       await axios.put(
-        `http://localhost:5000/api/tickets/close/${ticketId}`,
+        `${API_URL}/api/tickets/close/${ticketId}`,
         {},
         { withCredentials: true }
       )

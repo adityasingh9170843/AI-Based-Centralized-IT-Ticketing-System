@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import axios from "axios"
+import API_URL from "@/config/api"
 
 export default function AddEngineerModal({ onClose}) {
   const [name, setName] = useState("")
@@ -24,7 +25,7 @@ export default function AddEngineerModal({ onClose}) {
 
   const getDepartments = async () => {
     try{
-      const response = await axios.get("http://localhost:5000/api/departments/", {withCredentials: true})
+      const response = await axios.get(`${API_URL}/api/departments/`, {withCredentials: true})
       setDepartments(response.data)
     }
     catch(error){
@@ -47,7 +48,7 @@ export default function AddEngineerModal({ onClose}) {
 
     try{
       const response = await axios.post(
-        "http://localhost:5000/api/engineer/register",
+        `${API_URL}/api/engineer/register`,
         { name, email, password, departmentId, expertise: selectedSkills },  
         {withCredentials: true}
       )

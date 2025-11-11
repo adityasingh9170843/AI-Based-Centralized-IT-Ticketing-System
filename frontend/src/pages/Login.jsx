@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Shield, Loader2, User } from "lucide-react";
+import API_URL from "@/config/api";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Login = () => {
 		if (!canSubmit) return;
 		setLoading(true);
 		try {
-			const url = accountType === "engineer" ? "http://localhost:5000/api/engineer/login" : "http://localhost:5000/api/auth/login";
+			const url = accountType === "engineer" ? `${API_URL}/api/engineer/login` : `${API_URL}/api/auth/login`;
 			const res = await axios.post(url, { email, password }, { withCredentials: true });
 			const user = res?.data?.user || res?.data?.engineer || null;
 			if (user) {

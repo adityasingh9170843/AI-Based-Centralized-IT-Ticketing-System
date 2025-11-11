@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { UserCheck, Search } from "lucide-react"
 import axios from "axios"
+import API_URL from "@/config/api"
 
 export default function AssignEngineerDialog({ ticket, isOpen, onClose, onAssignSuccess }) {
   const [engineers, setEngineers] = useState([])
@@ -38,7 +39,7 @@ export default function AssignEngineerDialog({ ticket, isOpen, onClose, onAssign
 
   const fetchEngineers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/engineers/", {
+      const response = await axios.get(`${API_URL}/api/engineers/`, {
         withCredentials: true,
       })
       setEngineers(response.data)
@@ -53,7 +54,7 @@ export default function AssignEngineerDialog({ ticket, isOpen, onClose, onAssign
     setIsAssigning(true)
     try {
       await axios.put(
-        `http://localhost:5000/api/tickets/assign/${ticket._id}/${selectedEngineer._id}`,
+        `${API_URL}/api/tickets/assign/${ticket._id}/${selectedEngineer._id}`,
         {},
         { withCredentials: true }
       )

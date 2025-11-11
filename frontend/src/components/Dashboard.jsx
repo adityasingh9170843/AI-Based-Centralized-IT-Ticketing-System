@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { CheckCircle, Clock, Users, AlertCircle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import axios from "axios"
+import API_URL from "@/config/api"
 
 export default function Dashboard() {
   const [tickets, setTickets] = useState([])
@@ -17,9 +18,9 @@ export default function Dashboard() {
     setLoading(true)
     try {
       const [ticketsRes, engineersRes, departmentsRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/tickets/", { withCredentials: true }),
-        axios.get("http://localhost:5000/api/engineers/", { withCredentials: true }),
-        axios.get("http://localhost:5000/api/departments/", { withCredentials: true }),
+        axios.get(`${API_URL}/api/tickets/`, { withCredentials: true }),
+        axios.get(`${API_URL}/api/engineers/`, { withCredentials: true }),
+        axios.get(`${API_URL}/api/departments/`, { withCredentials: true }),
       ])
       setTickets(ticketsRes.data)
       setEngineers(engineersRes.data)

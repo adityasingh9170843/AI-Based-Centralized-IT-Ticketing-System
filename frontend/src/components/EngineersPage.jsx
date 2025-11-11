@@ -7,6 +7,7 @@ import { Mail, Briefcase, Plus, Award } from "lucide-react"
 import AddEngineerModal from "./AddEngineerForm"
 import axios from "axios"
 import { useEffect } from "react"
+import API_URL from "@/config/api"
 
 
 export default function EngineersPage() {
@@ -17,7 +18,7 @@ export default function EngineersPage() {
 
   const getEngineers = async () => {
     try{
-      const response = await axios.get("http://localhost:5000/api/engineers/", {withCredentials: true})
+      const response = await axios.get(`${API_URL}/api/engineers/`, {withCredentials: true})
       setEngineer(response.data)
       console.log(response)
     }
@@ -28,7 +29,7 @@ export default function EngineersPage() {
 
   const getDepartments = async () => {
     try{
-      const response = await axios.get("http://localhost:5000/api/departments/", {withCredentials: true})
+      const response = await axios.get(`${API_URL}/api/departments/`, {withCredentials: true})
       setDepartments(response.data)
       console.log(response)
     }

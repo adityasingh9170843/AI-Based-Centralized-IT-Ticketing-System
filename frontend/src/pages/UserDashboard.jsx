@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Loader2, Eye } from "lucide-react";
+import API_URL from "@/config/api";
 
 const getPriorityColor = (priority) => {
   switch (priority) {
@@ -55,7 +56,7 @@ export default function UserDashboard() {
   useEffect(() => {
     const load = async () => {
       try {
-        const myRes = await axios.get("http://localhost:5000/api/tickets/user/my", { withCredentials: true });
+        const myRes = await axios.get(`${API_URL}/api/tickets/user/my`, { withCredentials: true });
         setTickets(Array.isArray(myRes.data) ? myRes.data : []);
       } catch (err) {
         console.log("Init load failed", err);
@@ -67,7 +68,7 @@ export default function UserDashboard() {
   const refreshTickets = async () => {
     try {
       setLoadingTickets(true);
-      const myRes = await axios.get("http://localhost:5000/api/tickets/user/my", { withCredentials: true });
+      const myRes = await axios.get(`${API_URL}/api/tickets/user/my`, { withCredentials: true });
       setTickets(Array.isArray(myRes.data) ? myRes.data : []);
     } catch (err) {
       console.log("Refresh tickets failed", err);
@@ -83,7 +84,7 @@ export default function UserDashboard() {
     setSubmitting(true);
     try {
       await axios.post(
-        "http://localhost:5000/api/tickets/create",
+        `${API_URL}/api/tickets/create`,
         { title, description },
         { withCredentials: true }
       );

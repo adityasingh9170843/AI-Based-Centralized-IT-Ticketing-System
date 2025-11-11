@@ -20,6 +20,7 @@ import {
   User as UserIcon
 } from "lucide-react"
 import axios from "axios"
+import API_URL from "@/config/api"
 import { useNavigate } from "react-router-dom"
 
 const getPriorityColor = (priority) => {
@@ -71,7 +72,7 @@ function EngineerDashboard() {
     setLoading(true)
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/tickets/engineer/${user._id}`,
+        `${API_URL}/api/tickets/engineer/${user._id}`,
         { withCredentials: true }
       )
       setTickets(response.data)
@@ -91,7 +92,7 @@ function EngineerDashboard() {
     setIsSubmitting(true)
     try {
       await axios.put(
-        `http://localhost:5000/api/tickets/resolve/${selectedTicket._id}`,
+        `${API_URL}/api/tickets/resolve/${selectedTicket._id}`,
         { resolution },
         { withCredentials: true }
       )
