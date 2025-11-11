@@ -136,6 +136,7 @@ export default function UserDashboard() {
                   <TableHead>Status</TableHead>
                   <TableHead>Assigned</TableHead>
                   <TableHead>Created</TableHead>
+                  <TableHead>Resolution</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -146,6 +147,7 @@ export default function UserDashboard() {
                     <TableCell>{t.status}</TableCell>
                     <TableCell>{t.assignedEngineer?.name || "—"}</TableCell>
                     <TableCell>{new Date(t.createdAt).toLocaleString()}</TableCell>
+                    <TableCell>{t.resolution || "—"}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
