@@ -5,7 +5,37 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Loader2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Loader2, Eye } from "lucide-react";
+
+const getPriorityColor = (priority) => {
+  switch (priority) {
+    case "High":
+      return "bg-red-500/15 text-red-300 border-red-500/30"
+    case "Medium":
+      return "bg-amber-500/15 text-amber-300 border-amber-500/25"
+    case "Low":
+      return "bg-emerald-500/15 text-emerald-300 border-emerald-500/25"
+    default:
+      return "bg-muted text-muted-foreground border-border"
+  }
+}
+
+const getStatusColor = (status) => {
+  switch (status) {
+    case "Open":
+      return "bg-amber-500/15 text-amber-300 border-amber-500/25"
+    case "In Progress":
+      return "bg-cyan-500/15 text-cyan-300 border-cyan-500/25"
+    case "Resolved":
+      return "bg-emerald-500/15 text-emerald-300 border-emerald-500/25"
+    case "Closed":
+      return "bg-zinc-500/15 text-zinc-300 border-zinc-500/25"
+    default:
+      return "bg-muted text-muted-foreground border-border"
+  }
+}
 
 export default function UserDashboard() {
   const { user } = useContext(UserContext);
@@ -15,6 +45,7 @@ export default function UserDashboard() {
   const [error, setError] = useState("");
   const [tickets, setTickets] = useState([]);
   const [loadingTickets, setLoadingTickets] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
 
   const canSubmit = useMemo(
     () => title.trim() && description.trim() && !submitting,
@@ -136,18 +167,47 @@ export default function UserDashboard() {
                   <TableHead>Status</TableHead>
                   <TableHead>Assigned</TableHead>
                   <TableHead>Created</TableHead>
-                  <TableHead>Resolution</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {tickets.map((t) => (
                   <TableRow key={t._id}>
-                    <TableCell className="max-w-[320px] truncate" title={t.title}>{t.title}</TableCell>
-                    <TableCell>{t.priority}</TableCell>
-                    <TableCell>{t.status}</TableCell>
-                    <TableCell>{t.assignedEngineer?.name || "—"}</TableCell>
-                    <TableCell>{new Date(t.createdAt).toLocaleString()}</TableCell>
-                    <TableCell>{t.resolution || "—"}</TableCell>
+                    <TableCell className="max-w-[320px]">
+                      <div className="truncate" title={t.title}>{t.title}</div>
+                      {t.resolution && (
+                        <div className="text-xs text-muted-foreground mt-1 truncate" title={t.resolution}>
+                          Resolution: {t.resolution}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={`${getPriorityColor(t.priority)} border capitalize`}>
+                        {t.priority}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={`${getStatusColor(t.status)} border capitalize`}>
+                        {t.status.replace("-", " ")}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {t.assignedEngineer?.name || "—"}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {new Date(t.createdAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedTicket(t)}
+                        className="h-8 gap-2"
+                      >
+                        <Eye className="h-4 w-4" />
+                        View
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -155,6 +215,89 @@ export default function UserDashboard() {
           )}
         </CardContent>
       </Card>
+
+      {/* Ticket Details Dialog */}
+      {selectedTicket && (
+        <Dialog open={!!selectedTicket} onOpenChange={() => setSelectedTicket(null)}>
+          <DialogContent className="max-w-2xl border border-border/70 bg-card backdrop-blur">
+            <DialogHeader>
+              <DialogTitle className="text-2xl text-foreground/90">Ticket Details</DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              {/* Ticket Info */}
+              <div className="space-y-3">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Title</label>
+                  <p className="text-foreground mt-1">{selectedTicket.title}</p>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Description</label>
+                  <p className="text-foreground mt-1 whitespace-pre-wrap">{selectedTicket.description}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Priority</label>
+                    <div className="mt-1">
+                      <Badge className={`${getPriorityColor(selectedTicket.priority)} border`}>
+                        {selectedTicket.priority}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Status</label>
+                    <div className="mt-1">
+                      <Badge className={`${getStatusColor(selectedTicket.status)} border`}>
+                        {selectedTicket.status.replace("-", " ")}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Category</label>
+                    <p className="text-foreground mt-1">{selectedTicket.category || "—"}</p>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Assigned Engineer</label>
+                    <p className="text-foreground mt-1">{selectedTicket.assignedEngineer?.name || "Not assigned yet"}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Created</label>
+                  <p className="text-foreground mt-1">{new Date(selectedTicket.createdAt).toLocaleString()}</p>
+                </div>
+
+                {selectedTicket.resolution && (
+                  <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                    <label className="text-sm font-medium text-emerald-300 flex items-center gap-2">
+                      <Eye className="h-4 w-4" />
+                      Resolution
+                    </label>
+                    <p className="text-foreground mt-2 whitespace-pre-wrap">{selectedTicket.resolution}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedTicket(null)}
+                  className="border-border/60"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
