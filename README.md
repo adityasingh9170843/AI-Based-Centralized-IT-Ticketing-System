@@ -1,4 +1,3 @@
-for screenshots.
 # 📡 AI-Powered IT Ticket Management System
 
 A modern IT helpdesk platform that uses **AI + vector embeddings** to automatically classify, route, and assign tickets — eliminating manual workload and ensuring faster resolution.
