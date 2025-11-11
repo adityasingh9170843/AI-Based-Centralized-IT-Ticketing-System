@@ -121,14 +121,17 @@ Your helpdesk becomes a **self-organizing AI system**.
 
 ## 🖼️ Screenshots (to be added)
 
-```
-[ Dashboard Screenshot ]
-[ Tickets List ]
-[ Engineer Management ]
-[ Ticket Details Page ]
-```
 
-*(Place your screenshots here in future updates)*
+<img width="2558" height="1258" alt="image" src="https://github.com/user-attachments/assets/33547d46-8512-4140-b1dc-9ecaf0add608" />
+<img width="2543" height="1252" alt="image" src="https://github.com/user-attachments/assets/2938ff32-65b1-4770-9a67-ffefdb947a0d" />
+<img width="2541" height="1259" alt="image" src="https://github.com/user-attachments/assets/a08727d1-bff5-46e3-b6d6-337825d521c5" />
+<img width="2545" height="1265" alt="image" src="https://github.com/user-attachments/assets/edce28c3-77ae-475d-a9ab-c6ba5510a447" />
+<img width="2545" height="1258" alt="image" src="https://github.com/user-attachments/assets/b1c457ac-e4fd-4a64-8daf-fdd51394dd60" />
+<img width="2531" height="1240" alt="image" src="https://github.com/user-attachments/assets/a9804b6a-41a8-4852-b4aa-48b573242d35" />
+<img width="2534" height="1258" alt="image" src="https://github.com/user-attachments/assets/63df44ed-e359-4e23-879c-87bca281129d" />
+
+
+
 
 ---
 
