@@ -56,16 +56,12 @@ const Login = () => {
 				</div>
 				<div className="space-y-6">
 					<h1 className="text-3xl font-semibold leading-tight">
-						AI‑powered, centralized IT ticketing
+						AI-powered, centralized IT ticketing
 					</h1>
 					<p className="text-muted-foreground max-w-md">
-						Resolve faster with intelligent triage, real‑time analytics, and a streamlined engineer workflow.
+						Resolve faster with intelligent triage and a streamlined engineer workflow.
 					</p>
-					<ul className="text-sm text-muted-foreground/90 space-y-2">
-						<li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> SSO‑ready secure access</li>
-						<li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> Smart routing to the right team</li>
-						<li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> Built‑in SLAs and insights</li>
-					</ul>
+				
 				</div>
 				<p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Smart Support. All rights reserved.</p>
 			</div>
